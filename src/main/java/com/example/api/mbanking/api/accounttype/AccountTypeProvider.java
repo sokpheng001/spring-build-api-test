@@ -12,8 +12,8 @@ public class AccountTypeProvider {
     public String buildInsertSql(){
         return new SQL(){{
             INSERT_INTO("account_types");
-            VALUES("1","Promoted");
+            VALUES("id","5");
+            VALUES("name","Promoted");
         }}.toString();
-
     }
 }
