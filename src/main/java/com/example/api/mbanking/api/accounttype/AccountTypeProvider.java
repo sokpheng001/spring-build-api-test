@@ -1,5 +1,4 @@
 package com.example.api.mbanking.api.accounttype;
-
 import org.apache.ibatis.jdbc.SQL;
 
 public class AccountTypeProvider {
@@ -8,6 +7,12 @@ public class AccountTypeProvider {
             //TODO:
             SELECT("*");
             FROM("account_types");
+        }}.toString();
+    }
+    public String buildInsertSql(){
+        return new SQL(){{
+            INSERT_INTO("account_types");
+            VALUES("1","Promoted");
         }}.toString();
     }
 }

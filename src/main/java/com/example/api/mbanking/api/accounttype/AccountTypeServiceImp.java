@@ -16,6 +16,7 @@ public class AccountTypeServiceImp implements AccountTypeService{
         List<AccountTypeDto> accountTypeDtos = accountTypes
                 .stream()
                 .map(accountType -> new AccountTypeDto(accountType.getName())).collect(Collectors.toList());
+        System.out.println(accountTypeDtos);
         return accountTypeDtos;
     }
 }
