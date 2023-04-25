@@ -14,5 +14,6 @@ public class AccountTypeProvider {
             INSERT_INTO("account_types");
             VALUES("1","Promoted");
         }}.toString();
+
     }
 }
