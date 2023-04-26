@@ -4,4 +4,5 @@ import java.util.List;
 
 public interface AccountTypeService {
     List<AccountTypeDto> findAll();
+    List<AccountType> insert();
 }

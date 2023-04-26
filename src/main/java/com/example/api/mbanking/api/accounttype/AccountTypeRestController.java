@@ -1,15 +1,12 @@
 package com.example.api.mbanking.api.accounttype;
 
-import com.example.api.mbanking.base.BaseRest;
-import com.fasterxml.jackson.databind.ser.Serializers;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+        import com.example.api.mbanking.base.BaseRest;
 
-import java.time.LocalDateTime;
+        import lombok.RequiredArgsConstructor;
+        import org.springframework.http.HttpStatus;
+        import org.springframework.web.bind.annotation.*;
+
+        import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,7 +16,7 @@ public class AccountTypeRestController {
     @GetMapping
     BaseRest<?> findAll(){
         var accountTypDtoList = accountTypeService.findAll();
-        System.out.println("Got !!!");
+        System.out.println("You Got It !!!");
         return BaseRest
                 .builder()
                 .status(true)
@@ -29,5 +26,17 @@ public class AccountTypeRestController {
                 .data(accountTypDtoList)
                 .build();
     }
-
+    @GetMapping("/add")
+    BaseRest<?> insert(@RequestBody AccountType accountType){
+        accountTypeService.insert();
+        System.out.println(accountType);
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Account types has been found")
+                .timestamp(LocalDateTime.now())
+                .data(accountType)
+                .build();
+    }
 }

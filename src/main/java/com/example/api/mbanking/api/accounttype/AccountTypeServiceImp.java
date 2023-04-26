@@ -4,19 +4,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AccountTypeServiceImp implements AccountTypeService{
     private final AccountTypeMapper accountTypeMapper;
+    private final AccountTypeMapStruct accountTypeDtos;
     @Override
     public List<AccountTypeDto> findAll() {
-        accountTypeMapper.insert();
         List<AccountType> accountTypes = accountTypeMapper.select();
-        List<AccountTypeDto> accountTypeDtos = accountTypes
-                .stream()
-                .map(accountType -> new AccountTypeDto(accountType.getName())).collect(Collectors.toList());
-        return accountTypeDtos;
+        System.out.println("This is " + accountTypes);
+//        List<AccountTypeDto> accountTypeDtos = accountTypes
+//                .stream()
+//                .map(accountType -> new AccountTypeDto(accountType.getName())).collect(Collectors.toList());
+        return accountTypeDtos.toDtoList(accountTypes);
+    }
+    @Override
+    public List<AccountType> insert() {
+        return accountTypeMapper.insert();
     }
 }

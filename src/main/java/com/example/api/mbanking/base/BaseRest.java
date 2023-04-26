@@ -2,7 +2,6 @@ package com.example.api.mbanking.base;
 
 import lombok.Builder;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
