@@ -1,10 +1,11 @@
 package com.example.api.mbanking.api.user;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 
 public class UserProvider {
     private static final String tableName = "users";
-    public String buildInsertSql(){
+    public String buildInsertSql(@Param("u") User user){
         return new SQL(){{
             INSERT_INTO(tableName);
             VALUES("name","#{u.name}");
