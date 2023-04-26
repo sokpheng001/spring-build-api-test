@@ -16,7 +16,12 @@ public class UserServiceIpm implements UserService{
     public UserDto createNewUser(CreateUserDto createUserDto) {
         User user = userMapStruct.createUserDtoToUser(createUserDto);
         userMapper.insert(user);
-        log.info("Id = {}",user.getId());
+        log.info("oneSignalId = {}",user.getId());
         return userMapStruct.userToUserDto(user);
+    }
+    @Override
+    public Boolean deleteUser(Integer id) {
+        userMapper.delete(id);
+        return true;
     }
 }

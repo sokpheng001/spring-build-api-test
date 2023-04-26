@@ -6,10 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -21,9 +18,8 @@ public class UserRestController {
     private final UserService userService;
     @PostMapping
     public BaseRest<?> createNewUser(@RequestBody @Valid CreateUserDto createUserDto){
-        UserDto userDto = userService.createNewUser(createUserDto);
-        System.out.println(userDto);
         System.out.println(createUserDto);
+        UserDto userDto = userService.createNewUser(createUserDto);
         return BaseRest
                 .builder()
                 .status(true)
@@ -33,4 +29,10 @@ public class UserRestController {
                 .data(userDto)
                 .build();
     }
+    @PostMapping("/id")
+    public Boolean delete(@RequestParam Integer id){
+        userService.deleteUser(id);
+        return true;
+    }
+//    @GetMapping("/all")
 }

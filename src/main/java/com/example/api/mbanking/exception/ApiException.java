@@ -24,7 +24,7 @@ public class ApiException {
         List<Map<String,String>> errors = new ArrayList<>();
         for(FieldError error: methodArgumentNotValidException.getFieldErrors()){
             Map<String, String> errorDetail = new HashMap<>();
-            errorDetail.put("name",error.getField());
+            errorDetail.put("field",error.getField());
             errorDetail.put("message : ",error.getDefaultMessage());
             errors.add(errorDetail);
         }

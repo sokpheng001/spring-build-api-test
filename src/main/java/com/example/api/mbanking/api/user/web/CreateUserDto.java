@@ -6,8 +6,9 @@ import jakarta.validation.constraints.NotNull;
 public record CreateUserDto(
         @NotBlank(message = "Name is required.")
         String name
-        , @NotBlank  String gender
+        , @NotBlank(message = "Gender is required.")
+        String gender
         , String studentCardId
-        , @NotNull Boolean isStudent
+        , @NotNull(message = "Must be detailed.") Boolean isStudent
         , String oneSignalId) {
 }

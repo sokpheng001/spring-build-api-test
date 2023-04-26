@@ -19,8 +19,10 @@ public class AccountTypeServiceImp implements AccountTypeService{
 //                .map(accountType -> new AccountTypeDto(accountType.getName())).collect(Collectors.toList());
         return accountTypeDtos.toDtoList(accountTypes);
     }
+
     @Override
-    public List<AccountType> insert() {
-        return accountTypeMapper.insert();
+    public List<AccountTypeDto> insert() {
+        return null;
     }
+
 }

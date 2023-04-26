@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Mapper
 public interface UserMapper {
-    @InsertProvider(type =UserProvider.class , method = "buildInsertSql")
+    @InsertProvider(type = UserProvider.class , method = "buildInsertSql")
     @Options(useGeneratedKeys = true, keyColumn = "id",keyProperty = "id")
     void insert(@Param("u") User user);
+    @DeleteProvider(type = UserProvider.class, method = "buildDeleteSql")
+    void delete(@Param(("d")) Integer id);
 }
