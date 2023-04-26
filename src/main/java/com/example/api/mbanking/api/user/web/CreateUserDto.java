@@ -1,4 +1,13 @@
 package com.example.api.mbanking.api.user.web;
 
-public record CreateUserDto(String name, String gender, String studentCardId, Boolean isStudent, String oneSignalId) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record CreateUserDto(
+        @NotBlank(message = "Name is required.")
+        String name
+        , @NotBlank  String gender
+        , String studentCardId
+        , @NotNull Boolean isStudent
+        , String oneSignalId) {
 }
