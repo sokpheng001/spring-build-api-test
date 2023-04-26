@@ -1,5 +1,7 @@
-package com.example.api.mbanking.api.accounttype;
+package com.example.api.mbanking.api.accounttype.web;
 
+        import com.example.api.mbanking.api.accounttype.AccountType;
+        import com.example.api.mbanking.api.accounttype.AccountTypeService;
         import com.example.api.mbanking.base.BaseRest;
 
         import lombok.RequiredArgsConstructor;
@@ -7,6 +9,7 @@ package com.example.api.mbanking.api.accounttype;
         import org.springframework.web.bind.annotation.*;
 
         import java.time.LocalDateTime;
+        import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,17 +29,31 @@ public class AccountTypeRestController {
                 .data(accountTypDtoList)
                 .build();
     }
-    @GetMapping("/add")
-    BaseRest<?> insert(@RequestBody AccountType accountType){
-        accountTypeService.insert();
-        System.out.println(accountType);
+    @PostMapping("/add")
+    BaseRest<?> insert(@RequestBody AccountTypeDto accountTypeDto){
+        System.out.println(accountTypeDto + " It's now");
+        List<AccountTypeDto> accountTypeDtos = accountTypeService.insert(accountTypeDto);
         return BaseRest
                 .builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .message("Account types has been found")
                 .timestamp(LocalDateTime.now())
-                .data(accountType)
+                .data(accountTypeDtos)
                 .build();
     }
+    @PostMapping("/delete")
+    BaseRest<?> insert(@RequestBody AccountTypeIdDto accountTypeIdDto){
+        System.out.println(accountTypeIdDto + " It's now");
+        List<AccountTypeDto> accountTypeDtos = accountTypeService.delete(accountTypeIdDto.id());
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Account types has been found")
+                .timestamp(LocalDateTime.now())
+                .data(accountTypeDtos)
+                .build();
+    }
+
 }

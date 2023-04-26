@@ -12,9 +12,14 @@ public class AccountTypeProvider {
     }
     public String buildInsertSql(){
         return new SQL(){{
-            INSERT_INTO("account_types");
-                    VALUES("id","#{i.id}");
-                    VALUES("name","#{i.name}");
+            INSERT_INTO(tableName);
+                    VALUES("name","#{n.name}");
+        }}.toString();
+    }
+    public String buildDeleteSql(){
+        return new SQL(){{
+            DELETE_FROM(tableName);
+            WHERE("id = #{i.id}");
         }}.toString();
     }
 }
