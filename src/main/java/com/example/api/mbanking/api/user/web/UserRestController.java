@@ -34,5 +34,15 @@ public class UserRestController {
         userService.deleteUser(id);
         return true;
     }
-//    @GetMapping("/all")
+    @GetMapping("/{id}")
+    public BaseRest<?> findUserById(@PathVariable Integer id){
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("User has been created successfully")
+                .timestamp(LocalDateTime.now())
+                .data(userService.findUserById(id))
+                .build();
+    }
 }

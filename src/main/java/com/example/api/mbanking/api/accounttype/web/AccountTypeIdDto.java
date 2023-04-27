@@ -1,4 +1,7 @@
 package com.example.api.mbanking.api.accounttype.web;
 
-public record AccountTypeIdDto(Integer id) {
-}
+import lombok.Builder;
+
+@Builder
+
+public record AccountTypeIdDto(Integer id) { }

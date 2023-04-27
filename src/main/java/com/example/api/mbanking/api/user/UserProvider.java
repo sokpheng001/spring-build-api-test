@@ -20,7 +20,14 @@ public class UserProvider {
     public String buildDeleteSql(@Param("d") Integer id){
         return new SQL(){{
             DELETE_FROM(tableName);
-            WHERE("id =#{d.id}");
+            WHERE("id =#{id}");
+        }}.toString();
+    }
+    public String buildSelectSql(){
+        return new SQL(){{
+            SELECT("*");
+            FROM(tableName);
+            WHERE("id = #{id}");
         }}.toString();
     }
 }
