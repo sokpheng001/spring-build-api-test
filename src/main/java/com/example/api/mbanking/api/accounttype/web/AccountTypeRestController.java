@@ -1,6 +1,5 @@
 package com.example.api.mbanking.api.accounttype.web;
 
-        import com.example.api.mbanking.api.accounttype.AccountType;
         import com.example.api.mbanking.api.accounttype.AccountTypeService;
         import com.example.api.mbanking.base.BaseRest;
 
@@ -42,17 +41,17 @@ public class AccountTypeRestController {
                 .data(accountTypeDtos)
                 .build();
     }
-//    @PostMapping("/delete")
-//    BaseRest<?> insert(@RequestBody AccountTypeIdDto accountTypeIdDto){
-//        System.out.println(accountTypeIdDto.id() + " It's now");
-//        List<AccountTypeDto> accountTypeDtos = accountTypeService.delete(accountTypeIdDto.id());
-//        return BaseRest
-//                .builder()
-//                .status(true)
-//                .code(HttpStatus.OK.value())
-//                .message("Account types has been found")
-//                .timestamp(LocalDateTime.now())
-//                .data(accountTypeDtos)
-//                .build();
-//    }
+    @PostMapping("/delete")
+    BaseRest<?> insert(@RequestBody AccountTypeIdDto accountTypeIdDto){
+        System.out.println(accountTypeIdDto.id() + " It's now");
+        List<AccountTypeDto> accountTypeDtos = accountTypeService.delete(accountTypeIdDto.id());
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Account types has been found")
+                .timestamp(LocalDateTime.now())
+                .data(accountTypeDtos)
+                .build();
+    }
 }
