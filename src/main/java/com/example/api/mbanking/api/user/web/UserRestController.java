@@ -29,20 +29,39 @@ public class UserRestController {
                 .data(userDto)
                 .build();
     }
-    @PostMapping("/id")
-    public Boolean delete(@RequestParam Integer id){
-        userService.deleteUser(id);
-        return true;
-    }
     @GetMapping("/{id}")
     public BaseRest<?> findUserById(@PathVariable Integer id){
         return BaseRest
                 .builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("User has been created successfully")
+                .message("User has been found successfully")
                 .timestamp(LocalDateTime.now())
                 .data(userService.findUserById(id))
+                .build();
+    }
+    @DeleteMapping("/{id}")
+    public BaseRest<?> deleteUserById(@PathVariable Integer id){
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("User has been deleted successfully")
+                .timestamp(LocalDateTime.now())
+                .data(userService.deleteUserById(id))
+                .build();
+    }
+    @PutMapping ("/{id}")
+    public BaseRest<?> UpdateIsDeletedStatusById(@PathVariable Integer id, @RequestBody IsDeletedDto isDeletedDto){
+        Integer deletedId = userService.UpdateIsDeletedStatusById(id, isDeletedDto.status());
+        System.out.println(isDeletedDto.status());
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Updated successfully.")
+                .timestamp(LocalDateTime.now())
+                .data(deletedId)
                 .build();
     }
 }

@@ -11,10 +11,15 @@ public interface UserMapper {
     @InsertProvider(type = UserProvider.class , method = "buildInsertSql")
     @Options(useGeneratedKeys = true, keyColumn = "id",keyProperty = "id")
     void insert(@Param("u") User user);
-    @DeleteProvider(type = UserProvider.class, method = "buildDeleteSql")
-    void delete(Integer id);
     @SelectProvider(type = UserProvider.class, method = "buildSelectSql")
     @Result(column = "student_card_id", property = "studentCardId")
     @Result(column = "is_student",property = "isStudent")
     Optional<User> selectById(@Param("id") Integer id);
+    //
+    @Select("SELECT EXISTS(SELECT *FROM mobilebankingapi.public.users WHERE id = #{id})")
+    boolean existById(@Param("id") Integer id);
+    @DeleteProvider(type = UserProvider.class, method = "deleteById")
+    void deleteById(@Param("id") Integer id);
+    @UpdateProvider(type = UserProvider.class, method = "buildUpdateIsDeleteByIdSql")
+    void updateIsDeletedById(@Param("id") Integer id, @Param("status") boolean status);
 }

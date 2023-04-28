@@ -17,16 +17,29 @@ public class UserProvider {
             VALUES("is_deleted","FALSE");
         }}.toString();
     }
-    public String buildDeleteSql(@Param("d") Integer id){
-        return new SQL(){{
-            DELETE_FROM(tableName);
-            WHERE("id =#{id}");
-        }}.toString();
-    }
+//    public String buildDeleteSql(@Param("d") Integer id){
+//        return new SQL(){{
+//            DELETE_FROM(tableName);
+//            WHERE("id =#{id}");
+//        }}.toString();
+//    }
     public String buildSelectSql(){
         return new SQL(){{
             SELECT("*");
             FROM(tableName);
+            WHERE("id = #{id}","is_deleted = FALSE");
+        }}.toString();
+    }
+    public String deleteById(){
+        return new SQL(){{
+            DELETE_FROM(tableName);
+            WHERE("id = #{id}");
+        }}.toString();
+    }
+    public String buildUpdateIsDeleteByIdSql(){
+        return new SQL(){{
+            UPDATE(tableName);
+            SET("is_deleted = #{status}");
             WHERE("id = #{id}");
         }}.toString();
     }

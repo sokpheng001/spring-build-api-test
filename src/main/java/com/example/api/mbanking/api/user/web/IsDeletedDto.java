@@ -1,0 +1,7 @@
+package com.example.api.mbanking.api.user.web;
+
+import lombok.Builder;
+
+
+public record IsDeletedDto(boolean status) {
+}
