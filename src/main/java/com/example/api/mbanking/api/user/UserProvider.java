@@ -4,8 +4,18 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 
+import java.awt.event.MouseWheelListener;
+
 public class UserProvider {
+
     private static final String tableName = "users";
+    public String buildSelectAllSql(){
+        return new SQL(){{
+            SELECT("*");
+            FROM(tableName);
+            WHERE("is_deleted = FALSE");
+        }}.toString();
+    }
     public String buildInsertSql(){
         return new SQL(){{
             INSERT_INTO(tableName);
@@ -28,6 +38,7 @@ public class UserProvider {
             SELECT("*");
             FROM(tableName);
             WHERE("id = #{id}","is_deleted = FALSE");
+            ORDER_BY("id DESC");
         }}.toString();
     }
     public String deleteById(){
@@ -41,6 +52,14 @@ public class UserProvider {
             UPDATE(tableName);
             SET("is_deleted = #{status}");
             WHERE("id = #{id}");
+        }}.toString();
+    }
+    public String UpdateByIdSql(){
+        return new SQL(){{
+            UPDATE(tableName);
+            SET("name = #{u.name}");
+            SET("gender = #{u.gender}");
+            WHERE("id = #{u.id}");
         }}.toString();
     }
 }

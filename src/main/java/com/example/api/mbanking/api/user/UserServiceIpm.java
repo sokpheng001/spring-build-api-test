@@ -1,9 +1,14 @@
 package com.example.api.mbanking.api.user;
 
 import com.example.api.mbanking.api.user.web.CreateUserDto;
+import com.example.api.mbanking.api.user.web.UpdateUserDto;
 import com.example.api.mbanking.api.user.web.UserDto;
+import com.github.pagehelper.ISelect;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.control.MappingControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,6 +27,12 @@ public class UserServiceIpm implements UserService{
         log.info("oneSignalId = {}",user.getId());
         return this.findUserById(user.getId());
     }
+    @Override
+    public PageInfo<UserDto> selectAllUser(int page, int limit) {
+        PageInfo<User> userPageInfo= PageHelper.startPage(page, limit).doSelectPageInfo(userMapper::select);
+        return userMapStruct.userPageInfoToUserDtoPageInfo(userPageInfo);
+    }
+
     @Override
     public Integer deleteUserById(Integer id) {
         boolean isFound = userMapper.existById(id);
@@ -49,5 +60,18 @@ public class UserServiceIpm implements UserService{
             userIdNotFoundServiceHandler.HandlerId(id);
         }
         return id;
+    }
+    @Override
+    public UserDto updateUserById(Integer id, UpdateUserDto updateUserDto) {
+        boolean isExited = userMapper.existById(id);
+        if(isExited){
+            User user = userMapStruct.updateUserDtotoUser(updateUserDto);
+            user.setId(id);
+            System.out.println(user);
+            userMapper.updateById(user);
+            return userMapStruct.userToUserDto(user);
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("User with %d is not found",id));
     }
 }

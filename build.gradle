@@ -19,6 +19,10 @@ repositories {
 }
 
 dependencies {
+    //pagination
+    // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter
+    implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.6'
+
     //
     // https://mvnrepository.com/artifact/org.projectlombok/lombok-mapstruct-binding
     implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
