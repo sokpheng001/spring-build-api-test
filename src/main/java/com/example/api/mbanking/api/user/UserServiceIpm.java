@@ -63,15 +63,13 @@ public class UserServiceIpm implements UserService{
     }
     @Override
     public UserDto updateUserById(Integer id, UpdateUserDto updateUserDto) {
-        boolean isExited = userMapper.existById(id);
-        if(isExited){
+        if(userMapper.existById(id)){
             User user = userMapStruct.updateUserDtotoUser(updateUserDto);
             user.setId(id);
-            System.out.println(user);
             userMapper.updateById(user);
-            return userMapStruct.userToUserDto(user);
+            return this.findUserById(id);
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format("User with %d is not found",id));
+                String.format("User with id %d is not found",id));
     }
 }

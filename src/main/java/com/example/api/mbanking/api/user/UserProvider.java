@@ -38,7 +38,6 @@ public class UserProvider {
             SELECT("*");
             FROM(tableName);
             WHERE("id = #{id}","is_deleted = FALSE");
-            ORDER_BY("id DESC");
         }}.toString();
     }
     public String deleteById(){
@@ -60,6 +59,7 @@ public class UserProvider {
             SET("name = #{u.name}");
             SET("gender = #{u.gender}");
             WHERE("id = #{u.id}");
+            ORDER_BY("id DESC");
         }}.toString();
     }
 }

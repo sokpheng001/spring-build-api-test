@@ -80,10 +80,8 @@ public class UserRestController {
                 .build();
     }
     @PutMapping("/{id}")
-    public BaseRest<?> updateUserById(@PathVariable("id") Integer id, @RequestParam UpdateUserDto updateUserDto){
+    public BaseRest<?> updateUserById(@PathVariable("id") Integer id, @RequestBody UpdateUserDto updateUserDto){
         UserDto userDto = userService.updateUserById(id,updateUserDto);
-        System.out.println(userDto);
-        System.out.println(updateUserDto);
         return BaseRest
                 .builder()
                 .status(true)
