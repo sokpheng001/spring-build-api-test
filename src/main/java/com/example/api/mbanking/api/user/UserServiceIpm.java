@@ -1,9 +1,6 @@
 package com.example.api.mbanking.api.user;
 
-import com.example.api.mbanking.api.user.web.CreateUserDto;
-import com.example.api.mbanking.api.user.web.UpdateUserDto;
-import com.example.api.mbanking.api.user.web.UserDto;
-import com.example.api.mbanking.api.user.web.UserDtoSearchByName;
+import com.example.api.mbanking.api.user.web.*;
 import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -79,7 +76,8 @@ public class UserServiceIpm implements UserService{
         return userMapStruct.fromUserListToUserDtoList(userMapper.searchUserByName(searchByName));
     }
     @Override
-    public List<UserDto> searchUserByStudentCardId(String studentCardId) {
-        return null;
+    public List<UserDto> searchUserByStudentCardId(StudentCardIDDto studentCardIDDto) {
+        List<User> users = userMapper.searchUserByStudentCardId(studentCardIDDto);
+        return userMapStruct.fromUserListToUserDtoList(users);
     }
 }

@@ -54,7 +54,7 @@ public class UserRestController {
                 .build();
     }
     //search
-    @GetMapping("/searching")
+    @GetMapping("/name-searched")
     public BaseRest<?> searchUserByName(@RequestBody UserDtoSearchByName userDtoSearchByName){
         System.out.println(userDtoSearchByName);
         return BaseRest
@@ -64,6 +64,17 @@ public class UserRestController {
                 .message("User has been found successfully")
                 .timestamp(LocalDateTime.now())
                 .data(userService.searchUserByName(userDtoSearchByName))
+                .build();
+    }
+    @GetMapping("/studentCardId-searched")
+    public BaseRest<?> searchUserByStudentCardId(@RequestBody StudentCardIDDto studentCardIDDto){
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("User has been found successfully")
+                .timestamp(LocalDateTime.now())
+                .data(userService.searchUserByStudentCardId(studentCardIDDto))
                 .build();
     }
     @DeleteMapping("/{id}")

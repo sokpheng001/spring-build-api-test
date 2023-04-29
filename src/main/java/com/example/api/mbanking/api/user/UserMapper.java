@@ -1,5 +1,6 @@
 package com.example.api.mbanking.api.user;
 
+import com.example.api.mbanking.api.user.web.StudentCardIDDto;
 import com.example.api.mbanking.api.user.web.UserDtoSearchByName;
 import org.apache.ibatis.annotations.*;
 import org.mapstruct.control.MappingControl;
@@ -39,4 +40,7 @@ public interface UserMapper {
     @SelectProvider(type = UserProvider.class, method = "searchUserByName")
     @ResultMap("userResultMap")
     List<User> searchUserByName(@Param("name")UserDtoSearchByName searchByName);
+    @SelectProvider(type = UserProvider.class, method = "searchUserByStudentCardId")
+    @ResultMap("userResultMap")
+    List<User> searchUserByStudentCardId(@Param("cardId") StudentCardIDDto studentCardIDDto);
 }

@@ -67,14 +67,14 @@ public class UserProvider {
         return new SQL(){{
             SELECT("*");
             FROM(tableName);
-            WHERE("name LIKE #{name.name}");
+            WHERE("name iLIKE '%' || #{name.name} || '%'");
         }}.toString();
     }
-    public String searchByStudentCardId(){
+    public String searchUserByStudentCardId(){
         return new SQL(){{
             SELECT("*");
             FROM(tableName);
-            WHERE("name LIKE #{name.name}");
+            WHERE("student_card_id = #{cardId.cardId}");
         }}.toString();
     }
 }
