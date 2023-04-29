@@ -25,7 +25,8 @@ public class AccountTypeRestController {
                 .build();
     }
     @GetMapping
-    BaseRest<?> findAll(){
+    public BaseRest<?> findAll(@RequestParam(defaultValue = "1", required = false, name = "page") int page,
+                               @RequestParam(defaultValue = "20", required = false, name = "limit") int limit){
         var accountTypDtoList = accountTypeService.findAll();
         System.out.println("You Got It !!!");
         return BaseRest
@@ -71,6 +72,5 @@ public class AccountTypeRestController {
                 .data(accountTypeService.serviceDeleteAccountTypeById(id))
                 .build();
     }
-
 }
 

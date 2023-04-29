@@ -44,7 +44,6 @@ public class UserRestController {
     public BaseRest<?> findAllUser(@RequestParam(required = false,name = "page", defaultValue = "1") int page,
                                    @RequestParam(name = "limit", defaultValue = "20", required = false) int limit){
         PageInfo<UserDto> pageInfo = userService.selectAllUser(page, limit);
-        System.out.println("This is : " + pageInfo);
         return BaseRest
                 .builder()
                 .status(true)
