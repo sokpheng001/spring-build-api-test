@@ -30,6 +30,10 @@ public interface UserMapper {
     //
     @Select("SELECT EXISTS(SELECT *FROM mobilebankingapi.public.users WHERE id = #{id})")
     boolean existById(@Param("id") Integer id);
+    @Select("SELECT EXISTS(SELECT *FROM mobilebankingapi.public.users WHERE student_card_id = #{cardId})")
+    boolean existByStudentCardId(@Param("cardId") String cardId);
+    @Select("SELECT EXISTS(SELECT *FROM mobilebankingapi.public.users WHERE name ilike '%' || #{name} || '%')")
+    boolean existByUserName(@Param("name") String name);
     @DeleteProvider(type = UserProvider.class, method = "deleteById")
     void deleteById(@Param("id") Integer id);
     @UpdateProvider(type = UserProvider.class, method = "buildUpdateIsDeleteByIdSql")

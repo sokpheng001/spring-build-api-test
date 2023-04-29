@@ -70,14 +70,23 @@ public class UserServiceIpm implements UserService{
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("User with id %d is not found",id));
     }
-
     @Override
     public List<UserDto> searchUserByName(UserDtoSearchByName searchByName){
-        return userMapStruct.fromUserListToUserDtoList(userMapper.searchUserByName(searchByName));
+        if(userMapper.existByUserName(searchByName.name())){
+            return userMapStruct.fromUserListToUserDtoList(userMapper.searchUserByName(searchByName));
+        }else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format("User with name %s is not found",searchByName.name()));
+        }
     }
     @Override
     public List<UserDto> searchUserByStudentCardId(StudentCardIDDto studentCardIDDto) {
-        List<User> users = userMapper.searchUserByStudentCardId(studentCardIDDto);
-        return userMapStruct.fromUserListToUserDtoList(users);
+        if(userMapper.existByStudentCardId(studentCardIDDto.cardId())){
+            List<User> users = userMapper.searchUserByStudentCardId(studentCardIDDto);
+            return userMapStruct.fromUserListToUserDtoList(users);
+        }else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format("User with card id %s is not found",studentCardIDDto.cardId()));
+        }
     }
 }
