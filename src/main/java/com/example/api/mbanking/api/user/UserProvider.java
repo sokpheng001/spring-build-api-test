@@ -62,4 +62,19 @@ public class UserProvider {
             ORDER_BY("id DESC");
         }}.toString();
     }
+    //search by name and studentCardId
+    public String searchUserByName(){
+        return new SQL(){{
+            SELECT("*");
+            FROM(tableName);
+            WHERE("name LIKE #{name.name}");
+        }}.toString();
+    }
+    public String searchByStudentCardId(){
+        return new SQL(){{
+            SELECT("*");
+            FROM(tableName);
+            WHERE("name LIKE #{name.name}");
+        }}.toString();
+    }
 }

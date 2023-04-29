@@ -53,6 +53,19 @@ public class UserRestController {
                 .data(pageInfo)
                 .build();
     }
+    //search
+    @GetMapping("/searching")
+    public BaseRest<?> searchUserByName(@RequestBody UserDtoSearchByName userDtoSearchByName){
+        System.out.println(userDtoSearchByName);
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("User has been found successfully")
+                .timestamp(LocalDateTime.now())
+                .data(userService.searchUserByName(userDtoSearchByName))
+                .build();
+    }
     @DeleteMapping("/{id}")
     public BaseRest<?> deleteUserById(@PathVariable Integer id){
         return BaseRest
@@ -89,4 +102,5 @@ public class UserRestController {
                 .data(userDto)
                 .build();
     }
+
 }

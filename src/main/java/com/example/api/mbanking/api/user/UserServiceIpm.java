@@ -3,6 +3,7 @@ package com.example.api.mbanking.api.user;
 import com.example.api.mbanking.api.user.web.CreateUserDto;
 import com.example.api.mbanking.api.user.web.UpdateUserDto;
 import com.example.api.mbanking.api.user.web.UserDto;
+import com.example.api.mbanking.api.user.web.UserDtoSearchByName;
 import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -12,6 +13,8 @@ import org.mapstruct.control.MappingControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -69,5 +72,14 @@ public class UserServiceIpm implements UserService{
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("User with id %d is not found",id));
+    }
+
+    @Override
+    public List<UserDto> searchUserByName(UserDtoSearchByName searchByName){
+        return userMapStruct.fromUserListToUserDtoList(userMapper.searchUserByName(searchByName));
+    }
+    @Override
+    public List<UserDto> searchUserByStudentCardId(String studentCardId) {
+        return null;
     }
 }

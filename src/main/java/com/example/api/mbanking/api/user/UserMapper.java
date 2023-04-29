@@ -1,6 +1,8 @@
 package com.example.api.mbanking.api.user;
 
+import com.example.api.mbanking.api.user.web.UserDtoSearchByName;
 import org.apache.ibatis.annotations.*;
+import org.mapstruct.control.MappingControl;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,4 +35,8 @@ public interface UserMapper {
     void updateIsDeletedById(@Param("id") Integer id, @Param("status") boolean status);
     @UpdateProvider(type = UserProvider.class, method = "UpdateByIdSql")
     void updateById(@Param("u") User user);
+    //search by name and STUDENT CARD ID
+    @SelectProvider(type = UserProvider.class, method = "searchUserByName")
+    @ResultMap("userResultMap")
+    List<User> searchUserByName(@Param("name")UserDtoSearchByName searchByName);
 }
