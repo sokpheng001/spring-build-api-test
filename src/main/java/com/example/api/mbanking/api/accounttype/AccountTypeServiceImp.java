@@ -17,7 +17,7 @@ public class AccountTypeServiceImp implements AccountTypeService{
     private final AccountTypeMapper accountTypeMapper;
     private final AccountTypeMapStruct accountTypeMapStruct;
     @Override
-    public List<AccountTypeDto> findAll() {
+    public List<AccountTypeDto> findAll(int page, int limit) {
         List<AccountType> accountTypes = accountTypeMapper.select();
 //        List<AccountTypeDto> accountTypeDtos = accountTypes
 //                .stream()
