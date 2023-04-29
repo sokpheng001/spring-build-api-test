@@ -2,6 +2,8 @@ package com.example.api.mbanking.api.accounttype;
 
 import com.example.api.mbanking.api.accounttype.web.AccountTypeDto;
 import com.example.api.mbanking.api.user.web.CreateUserDto;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,13 +19,14 @@ public class AccountTypeServiceImp implements AccountTypeService{
     private final AccountTypeMapper accountTypeMapper;
     private final AccountTypeMapStruct accountTypeMapStruct;
     @Override
-    public List<AccountTypeDto> findAll(int page, int limit) {
+    public PageInfo<AccountTypeDto> findAll(int page, int limit) {
         List<AccountType> accountTypes = accountTypeMapper.select();
 //        List<AccountTypeDto> accountTypeDtos = accountTypes
 //                .stream()
 //                .map(accountType -> new AccountTypeDto(accountType.getName())).collect(Collectors.toList());
         //        return accountTypeDtos;
-        return accountTypeMapStruct.toDtoList(accountTypes);
+        PageInfo<AccountType> accountTypePageInfo = PageHelper.startPage(page,limit).doSelectPageInfo(accountTypeMapper::select);
+        return accountTypeMapStruct.accountTypePageToAccountTypeDtoPage(accountTypePageInfo);
     }
     @Override
     public AccountTypeDto insert(CreateUserDto createUserDto) {
