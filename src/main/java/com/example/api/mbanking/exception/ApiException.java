@@ -28,8 +28,7 @@ public class ApiException {
                 .timestamp(LocalDateTime.now())
                 .message("Something went wrong...!!!, please check.")
                 .error(e.getReason())
-                .build();
-    }
+                .build();    }
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public BaseError<?> handleValidationException(MethodArgumentNotValidException methodArgumentNotValidException){

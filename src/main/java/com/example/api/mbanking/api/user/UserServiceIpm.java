@@ -32,7 +32,6 @@ public class UserServiceIpm implements UserService{
         PageInfo<User> userPageInfo= PageHelper.startPage(page, limit).doSelectPageInfo(userMapper::select);
         return userMapStruct.userPageInfoToUserDtoPageInfo(userPageInfo);
     }
-
     @Override
     public Integer deleteUserById(Integer id) {
         boolean isFound = userMapper.existById(id);

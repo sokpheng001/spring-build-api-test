@@ -19,7 +19,6 @@ public class UserRestController {
     private final UserService userService;
     @PostMapping
     public BaseRest<?> createNewUser(@RequestBody @Valid CreateUserDto createUserDto){
-        System.out.println(createUserDto);
         UserDto userDto = userService.createNewUser(createUserDto);
         return BaseRest
                 .builder()

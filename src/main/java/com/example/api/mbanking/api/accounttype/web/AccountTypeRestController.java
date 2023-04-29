@@ -1,20 +1,29 @@
 package com.example.api.mbanking.api.accounttype.web;
 
         import com.example.api.mbanking.api.accounttype.AccountTypeService;
+        import com.example.api.mbanking.api.user.web.CreateUserDto;
         import com.example.api.mbanking.base.BaseRest;
-
         import lombok.RequiredArgsConstructor;
         import org.springframework.http.HttpStatus;
         import org.springframework.web.bind.annotation.*;
-
         import java.time.LocalDateTime;
-        import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/account-types")
 public class AccountTypeRestController {
     private final AccountTypeService accountTypeService;
+    @PostMapping("/added-account")
+    public BaseRest<?> createAccountType(@RequestBody CreateUserDto createUserDto){
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Account types has been found")
+                .timestamp(LocalDateTime.now())
+                .data(accountTypeService.insert(createUserDto))
+                .build();
+    }
     @GetMapping
     BaseRest<?> findAll(){
         var accountTypDtoList = accountTypeService.findAll();
@@ -28,30 +37,40 @@ public class AccountTypeRestController {
                 .data(accountTypDtoList)
                 .build();
     }
-    @PostMapping("/add")
-    BaseRest<?> insert(@RequestBody AccountTypeDto accountTypeDto){
-        System.out.println(accountTypeDto + " It's now");
-        List<AccountTypeDto> accountTypeDtos = accountTypeService.insert(accountTypeDto);
+    @GetMapping("/{id}")
+    public BaseRest<?> selectById(@PathVariable Integer id){
+        System.out.println(accountTypeService.selectById(id));
         return BaseRest
                 .builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("Account types has been found")
+                .message("Account type has been selected successfully.")
                 .timestamp(LocalDateTime.now())
-                .data(accountTypeDtos)
+                .data(accountTypeService.selectById(id))
                 .build();
     }
-//    @PostMapping("/delete")
-//    BaseRest<?> insert(@RequestBody AccountTypeIdDto accountTypeIdDto){
-//        System.out.println(accountTypeIdDto.id() + " It's now");
-//        List<AccountTypeDto> accountTypeDtos = accountTypeService.delete(accountTypeIdDto.id());
-//        return BaseRest
-//                .builder()
-//                .status(true)
-//                .code(HttpStatus.OK.value())
-//                .message("Account types has been found")
-//                .timestamp(LocalDateTime.now())
-//                .data(accountTypeDtos)
-//                .build();
-//    }
+    @PutMapping("/{id}/id-updated")
+    public BaseRest<?> updateAccountTypeById(@PathVariable("id") Integer id, @RequestBody AccountTypeDto accountTypeDto){
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Account type has been updated successfully.")
+                .timestamp(LocalDateTime.now())
+                .data(accountTypeService.updatedById(id, accountTypeDto))
+                .build();
+    }
+    @DeleteMapping("/{id}/id-deleted")
+    public BaseRest<?> deleteAccountTypeById(@PathVariable("id") Integer id){
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Account type has been deleted successfully.")
+                .timestamp(LocalDateTime.now())
+                .data(accountTypeService.serviceDeleteAccountTypeById(id))
+                .build();
+    }
+
 }
+

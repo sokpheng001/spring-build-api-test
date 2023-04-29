@@ -1,5 +1,6 @@
 package com.example.api.mbanking.api.accounttype;
 import org.apache.ibatis.jdbc.SQL;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
 public class AccountTypeProvider {
     private final String tableName = "account_types";
@@ -10,16 +11,30 @@ public class AccountTypeProvider {
             FROM(tableName);
         }}.toString();
     }
-    public String buildInsertSql(){
-        return new SQL(){{
+    public String buildInsertSql() {
+        return new SQL() {{
             INSERT_INTO(tableName);
-                    VALUES("name","#{n.name}");
+            VALUES("name", "#{n.name}");
         }}.toString();
     }
-    public String buildDeleteSql(){
+        public String buildSelectByIdSql(){
+        return new SQL(){{
+            SELECT("*");
+            FROM(tableName);
+            WHERE("id  = #{id}");
+        }}.toString();
+    }
+    public String buildUpdateByIdSql(){
+        return new SQL(){{
+            UPDATE(tableName);
+            SET("name = #{accountType.name}");
+            WHERE("id  = #{id}");
+        }}.toString();
+    }
+    public String buildDeleteByIdSql(){
         return new SQL(){{
             DELETE_FROM(tableName);
-            WHERE("id = #{i.id}");
+            WHERE("id = #{id}");
         }}.toString();
     }
 }
