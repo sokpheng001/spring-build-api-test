@@ -1,6 +1,7 @@
 package com.example.api.mbanking.api.accounttype;
 
 import com.example.api.mbanking.api.accounttype.web.AccountTypeDto;
+import com.example.api.mbanking.api.accounttype.web.CreateAccountTypeDto;
 import com.example.api.mbanking.api.user.web.CreateUserDto;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -29,8 +30,8 @@ public class AccountTypeServiceImp implements AccountTypeService{
         return accountTypeMapStruct.accountTypePageToAccountTypeDtoPage(accountTypePageInfo);
     }
     @Override
-    public AccountTypeDto insert(CreateUserDto createUserDto) {
-        AccountType accountType = accountTypeMapStruct.fromCreateAccountDtotoAccountType(createUserDto);
+    public AccountTypeDto insert(CreateAccountTypeDto createAccountTypeDto) {
+        AccountType accountType = accountTypeMapStruct.fromCreateAccountDtotoAccountType(createAccountTypeDto);
         accountTypeMapper.insert(accountType);
         return accountTypeMapStruct.fromAccountTypeToAccountTypeDto(accountType);
     }

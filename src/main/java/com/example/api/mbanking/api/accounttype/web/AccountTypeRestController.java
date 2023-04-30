@@ -14,14 +14,14 @@ package com.example.api.mbanking.api.accounttype.web;
 public class AccountTypeRestController {
     private final AccountTypeService accountTypeService;
     @PostMapping("/added-account")
-    public BaseRest<?> createAccountType(@RequestBody CreateUserDto createUserDto){
+    public BaseRest<?> createAccountType(@RequestBody CreateAccountTypeDto createAccountTypeDto){
         return BaseRest
                 .builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .message("Account types has been found")
                 .timestamp(LocalDateTime.now())
-                .data(accountTypeService.insert(createUserDto))
+                .data(accountTypeService.insert(createAccountTypeDto))
                 .build();
     }
     @GetMapping
