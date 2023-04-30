@@ -9,7 +9,7 @@ import java.util.List;
 public interface AccountTypeService {
     PageInfo<AccountTypeDto> findAll(int page, int limit);
     AccountTypeDto insert(CreateAccountTypeDto createAccountTypeDto);
-    List<AccountTypeDto> selectById(Integer id);
-    Integer serviceDeleteAccountTypeById(Integer id);
     AccountTypeDto updatedById(Integer id, AccountTypeDto accountTypeDto);
+    Integer serviceDeleteAccountTypeById(Integer id);
+    List<AccountTypeDto> selectById(Integer id);
 }

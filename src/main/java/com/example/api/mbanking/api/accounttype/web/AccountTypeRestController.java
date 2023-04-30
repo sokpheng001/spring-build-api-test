@@ -1,13 +1,11 @@
 package com.example.api.mbanking.api.accounttype.web;
 
         import com.example.api.mbanking.api.accounttype.AccountTypeService;
-        import com.example.api.mbanking.api.user.web.CreateUserDto;
         import com.example.api.mbanking.base.BaseRest;
         import lombok.RequiredArgsConstructor;
         import org.springframework.http.HttpStatus;
         import org.springframework.web.bind.annotation.*;
         import java.time.LocalDateTime;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/account-types")
