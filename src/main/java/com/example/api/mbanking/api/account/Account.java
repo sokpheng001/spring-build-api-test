@@ -4,7 +4,6 @@ import com.example.api.mbanking.api.accounttype.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @Data
@@ -19,5 +18,5 @@ public class Account {
     private Integer password;
     private Integer phoneNumber;
     private Double transferLimit;
-    private List<AccountType> accountType;
+    private List<AccountType> accountTypes;
 }
