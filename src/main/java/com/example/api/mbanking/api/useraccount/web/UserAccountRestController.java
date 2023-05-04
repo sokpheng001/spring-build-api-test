@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/api/v1/user-accounts")
 @RequiredArgsConstructor
-public class UserAccountController {
+public class UserAccountRestController {
     private final UserAccountService userAccountService;
     @GetMapping
     public BaseRest<?> selectAll(){

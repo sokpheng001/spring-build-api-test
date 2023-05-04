@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AccountRestController {
     private final AccountService accountService;
-    @PostMapping("/account-created")
+    @PostMapping("/added-account")
     public BaseRest<?> createAccount(@RequestBody @Valid CreateAccountDto createAccountDto){
         return BaseRest
                 .builder()
@@ -53,7 +53,7 @@ public class AccountRestController {
                 .data(accountService.searchAccountById(id))
                 .build();
     }
-    @PutMapping("/{id}/account-updated")
+    @PutMapping("/{id}/id-updated")
     public BaseRest<?> updateAccountById(@PathVariable Integer id, @RequestBody UpdateAccountDto updateAccountDto){
         return BaseRest
                 .builder()
