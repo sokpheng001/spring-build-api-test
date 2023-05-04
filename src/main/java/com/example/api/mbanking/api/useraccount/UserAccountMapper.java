@@ -17,7 +17,7 @@ public interface UserAccountMapper {
             @Result(column = "created_at",property = "createdAt"),
             @Result(column = "is_disabled",property = "isDisabled")
     })
-    List<UserAccount> select();
+    List<UserAccount> selectAll();
     @InsertProvider(type = UserAccountProvider.class, method = "buildInsertSql")
     @ResultMap("resultUserAccountMapper")
     void insertUserAccount(@Param("a") CreateUserAccountDto createUserAccountDto);

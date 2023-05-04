@@ -1,16 +1,14 @@
 package com.example.api.mbanking.api.useraccount;
 
-import com.example.api.mbanking.api.user.User;
 import com.example.api.mbanking.api.useraccount.web.CreateUserAccountDto;
 import com.example.api.mbanking.api.useraccount.web.UpdateUserAccountIsDisabledDto;
 import com.example.api.mbanking.api.useraccount.web.UserAccountDto;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-
 
 @RequiredArgsConstructor
 @Service
@@ -18,9 +16,9 @@ public class UserAccountServiceImp implements UserAccountService {
     private final UserAccountMapper userAccountMapper;
     private final UserAccountMapStruct userAccountMapStruct;
     @Override
-    public List<UserAccountDto> selectAll() {
-        System.out.println("Date: " + userAccountMapper.select().get(0).getCreatedAt());
-        return userAccountMapStruct.fromUserAccountDtoListToUserAccountList(userAccountMapper.select());
+    public PageInfo<UserAccountDto> selectAll(int page, int limit) {
+        PageInfo<UserAccount> userAccountPageInfo = PageHelper.startPage(page, limit).doSelectPageInfo(userAccountMapper::selectAll);
+        return userAccountMapStruct.fromPageUserAccountToPageUserAccountDto(userAccountPageInfo);
     }
     @Override
     public UserAccountDto createUserAccount(CreateUserAccountDto createUserAccountDto) {

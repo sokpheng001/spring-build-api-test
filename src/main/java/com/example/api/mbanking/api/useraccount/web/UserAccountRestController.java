@@ -18,14 +18,16 @@ import java.util.Date;
 public class UserAccountRestController {
     private final UserAccountService userAccountService;
     @GetMapping
-    public BaseRest<?> selectAll(){
+    public BaseRest<?> selectAll(
+            @RequestParam(required = false,name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "limit", defaultValue = "20", required = false) int limit){
         return BaseRest
                 .builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .message("User account has been selected successfully")
                 .timestamp(LocalDateTime.now())
-                .data(userAccountService.selectAll())
+                .data(userAccountService.selectAll(page, limit))
                 .build();
     }
     @PostMapping("/added")
