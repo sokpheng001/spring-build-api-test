@@ -13,8 +13,8 @@ import java.util.List;
 public interface UserAccountMapper {
     @SelectProvider(type = UserAccountProvider.class, method = "buildSelectAllSql")
     @Results(id = "resultMapper",value = {
-//            @Result(column = "user_id", property = "userId"),
-//            @Result(column = "account_id",property = "accountId"),
+            @Result(column = "user_id", property = "userId.id"),
+            @Result(column = "account_id",property = "accountId.id"),
             @Result(column = "created_at",property = "createdAt"),
             @Result(column = "is_disabled",property = "isDisabled")
     })

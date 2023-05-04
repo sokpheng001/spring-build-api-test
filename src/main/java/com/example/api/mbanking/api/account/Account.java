@@ -18,5 +18,5 @@ public class Account {
     private Integer password;
     private Integer phoneNumber;
     private Double transferLimit;
-    private List<AccountType> accountTypes;
+    private AccountType accountType;
 }

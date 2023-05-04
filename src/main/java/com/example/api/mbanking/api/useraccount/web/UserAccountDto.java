@@ -8,10 +8,10 @@ import java.util.Date;
 import java.util.List;
 
 
-@Builder
+
 public record UserAccountDto(
-        List<User> userId,
-        List<Account> accountId,
+        User userId,
+        Account accountId,
         Date createdAt,
         Boolean isDisabled
 ) { };

@@ -2,15 +2,16 @@ package com.example.api.mbanking.api.account.web;
 import com.example.api.mbanking.api.accounttype.AccountType;
 
 import lombok.Builder;
+import org.thymeleaf.model.IAttribute;
 
 import java.util.List;
 
-@Builder
 
 public record AccountDto(
         String accountNo,
         String accountName,
         String profile,
         Integer phoneNumber,
-        Double transferLimit
+        Double transferLimit,
+        AccountType accountType
 ){};

@@ -3,6 +3,9 @@ package com.example.api.mbanking.api.account;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.dao.support.PersistenceExceptionTranslationInterceptor;
 
+import java.awt.*;
+import java.nio.file.WatchEvent;
+
 public class AccountProvider {
     private final String tableName = "accounts";
     private final String getTableName = "account_types";
@@ -22,7 +25,39 @@ public class AccountProvider {
             VALUES("password","#{a.password}");
             VALUES("phone_number","#{a.phoneNumber}");
             VALUES("transfer_limit","#{a.transferLimit}");
-            VALUES("account_type","#{a.accountTypes.get(0).getId()}");
+            VALUES("account_type","#{a.accountType.id}");
+        }}.toString();
+    }
+    public String buildSelectById(){
+        return new SQL(){{
+            SELECT("*");
+            FROM(tableName);
+            WHERE("id = #{id}");
+        }}.toString();
+    }
+    public String buildDeleteByIdSql(){
+        return new SQL(){{
+            DELETE_FROM(tableName);
+            WHERE("id = #{id}");
+        }}.toString();
+    }
+    public String buildUpdateByIdSql(){
+        return new SQL(){{
+            UPDATE(tableName);
+            SET("account_name = #{u.accountName}");
+            SET("profile = #{u.profile}");
+            SET("password = #{u.password}");
+            SET("phone_number = #{u.phoneNumber}");
+            SET("transfer_limit = #{u.transferLimit}");
+            SET("account_type = #{u.accountType}");
+            WHERE("id =  #{id}");
+        }}.toString();
+    }
+    public String buildSearchAccountByName(){
+        return new SQL(){{
+            SELECT("*");
+            FROM(tableName);
+            WHERE("account_name iLIKE '%' || #{n.name} || '%'");
         }}.toString();
     }
 }

@@ -16,8 +16,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserAccount {
     private Integer id;
-    private List<User> userId;
-    private List<Account> accountId;
+    private User userId;
+    private Account accountId;
     private Date createdAt;
     private Boolean isDisabled;
 }
