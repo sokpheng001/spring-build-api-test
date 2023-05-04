@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AccountRestController {
     private final AccountService accountService;
-    @PostMapping("/added-account")
+    @PostMapping("/added")
     public BaseRest<?> createAccount(@RequestBody @Valid CreateAccountDto createAccountDto){
         return BaseRest
                 .builder()
@@ -81,7 +81,7 @@ public class AccountRestController {
                 .builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("Account has been deleted successfully")
+                .message("Account has been found successfully")
                 .timestamp(LocalDateTime.now())
                 .data(accountService.searchByAccountName(searchAccountByNameDto))
                 .build();

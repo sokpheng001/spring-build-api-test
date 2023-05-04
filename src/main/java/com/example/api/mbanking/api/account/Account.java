@@ -1,10 +1,10 @@
 package com.example.api.mbanking.api.account;
 
 import com.example.api.mbanking.api.accounttype.AccountType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
 @Data
 @NoArgsConstructor

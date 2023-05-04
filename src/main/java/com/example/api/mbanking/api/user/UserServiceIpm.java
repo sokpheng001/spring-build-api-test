@@ -50,9 +50,8 @@ public class UserServiceIpm implements UserService{
         return userMapStruct.userToUserDto(user);
     }
     @Override
-    public Integer UpdateIsDeletedStatusById(Integer id,boolean status) {
-        boolean isExisted = userMapper.existById(id);
-        if(isExisted){
+    public Integer updateIsDeletedStatusById(Integer id,boolean status) {
+        if(userMapper.existById(id)){
             userMapper.updateIsDeletedById(id, status);
         }else {
             userIdNotFoundServiceHandler.HandlerId(id);

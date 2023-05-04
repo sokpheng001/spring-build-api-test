@@ -1,15 +1,11 @@
 package com.example.api.mbanking.api.account;
 
-import com.example.api.mbanking.api.account.web.AccountDto;
 import com.example.api.mbanking.api.account.web.SearchAccountByNameDto;
 import com.example.api.mbanking.api.account.web.UpdateAccountDto;
-import com.example.api.mbanking.api.accounttype.AccountType;
-import jakarta.websocket.server.ServerEndpoint;
 import org.apache.ibatis.annotations.*;
 
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.StyledEditorKit;
 import java.util.List;
 
 @Repository

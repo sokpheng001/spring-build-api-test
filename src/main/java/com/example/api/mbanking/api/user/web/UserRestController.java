@@ -89,8 +89,8 @@ public class UserRestController {
                 .build();
     }
     @PutMapping ("/{id}/is-deleted")
-    public BaseRest<?> UpdateIsDeletedStatusById(@PathVariable Integer id, @RequestBody IsDeletedDto isDeletedDto){
-        Integer deletedId = userService.UpdateIsDeletedStatusById(id, isDeletedDto.status());
+    public BaseRest<?> updateIsDeletedStatusById(@PathVariable Integer id, @RequestBody IsDeletedDto isDeletedDto){
+        Integer deletedId = userService.updateIsDeletedStatusById(id, isDeletedDto.status());
         System.out.println(isDeletedDto.status());
         return BaseRest
                 .builder()
