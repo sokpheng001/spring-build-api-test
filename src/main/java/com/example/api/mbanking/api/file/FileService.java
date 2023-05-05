@@ -41,4 +41,10 @@ public interface FileService {
      * used for remove a file by a specific name
      */
     String removeFileByName(String fileName);
+
+    /**
+     * used for requesting the url for download file
+     * @return fileDownloadDto
+     */
+    FileDownloadDto downloadFile();
  }

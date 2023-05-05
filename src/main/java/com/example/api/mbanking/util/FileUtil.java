@@ -47,7 +47,6 @@ public class FileUtil {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Uploading failed...!");
         }
     }
-
     /**
      *
      * @param fileName used for finding file
@@ -92,6 +91,19 @@ public class FileUtil {
             }
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,"File is not found, please contact the developer..🤣🤣🤣");
+    }
+    public void removeAllFiles(){
+        File file = new File(fileServerPath);
+        File[] files = file.listFiles();
+        List<FileDto> fileDtoList = new ArrayList<>();
+        assert files != null;
+        try{
+            for(File file1: files){
+                file1.delete();
+            }
+        }catch (Exception exception){
+            return;
+        }
     }
 }
 

@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -83,6 +82,17 @@ public class FileRestController {
                 .code(HttpStatus.OK.value())
                 .timestamp(LocalDateTime.now())
                 .data(fileService.removeFileByName(fileName))
+                .message("File has been deleted successfully.")
+                .build();
+    }
+    @GetMapping("/download/{fileName}")
+    public BaseRest<?> downloadFile(@PathVariable("fileName") String fileName){
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .timestamp(LocalDateTime.now())
+                .data(null)
                 .message("File has been deleted successfully.")
                 .build();
     }

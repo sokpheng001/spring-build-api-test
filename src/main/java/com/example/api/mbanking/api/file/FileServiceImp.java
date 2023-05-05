@@ -32,21 +32,19 @@ public class FileServiceImp implements FileService{
         List<FileDto> fileDtoList = new ArrayList<>();
         assert files != null;
         for(File file1: files){
+            int indexForGettingFileExtension = file1.getName().lastIndexOf(".") + 1;
             fileDtoList
                     .add(
                             new FileDto(
                                     file1.getName()
                                     ,fileBaseUrl + file1.getName()
-                                    ,file1.getName().substring(file1.getName().lastIndexOf(".") + 1)
+                                    ,file1.getName().substring(indexForGettingFileExtension)
                                     ,file1.length()
                             )
                     );
         }
         return fileDtoList;
     }
-
-
-
     //upload single file
     @Override
     public FileDto uploadSingle(MultipartFile multipartFile) {
@@ -69,18 +67,15 @@ public class FileServiceImp implements FileService{
     //remove all files
     @Override
     public void removeAllFiles() {
-        File file = new File(fileServerPath);
-        File[] files = file.listFiles();
-        List<FileDto> fileDtoList = new ArrayList<>();
-        assert files != null;
-        for(File file1: files){
-            file1.delete();
-        }
+        fileUtil.removeAllFiles();
     }
     //remove a file by specific name
     @Override
     public String removeFileByName(String fileName) {
-        return
-                fileUtil.removeFileByName(fileName);
+        return fileUtil.removeFileByName(fileName);
+    }
+    @Override
+    public FileDownloadDto downloadFile() {
+        return null;
     }
 }
