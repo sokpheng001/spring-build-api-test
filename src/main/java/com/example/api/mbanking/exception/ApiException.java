@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,12 @@ import java.util.Map;
 @Slf4j
 public class ApiException {
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+
+    /**
+     *
+     * @param e used for handle respondStatusException
+     * @return BaseError<?>
+     */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResponseStatusException.class)
     public BaseError<?> handleServiceException(ResponseStatusException e){
@@ -31,6 +38,12 @@ public class ApiException {
                 .error(e.getReason())
                 .build();
     }
+
+    /**
+     *
+     * @param methodArgumentNotValidException used for validation for fields
+     * @return BaseError<?>
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public BaseError<?> handleValidationException(MethodArgumentNotValidException methodArgumentNotValidException){
@@ -47,6 +60,22 @@ public class ApiException {
                 .timestamp(LocalDateTime.now())
                 .message("Error")
                 .error(errors)
+                .build();
+    }
+    /**
+     *
+     * @param e used for validate file size for uploading
+     * @return BaseError<?>
+     */
+    @ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public BaseError<?> handleValidationException(MaxUploadSizeExceededException e){
+        return BaseError.builder()
+                .status(false)
+                .code(HttpStatus.PAYLOAD_TOO_LARGE.value())
+                .timestamp(LocalDateTime.now())
+                .message("Please check file size again.")
+                .error(e.getMessage()+": 1MB (1024KB)")
                 .build();
     }
 }

@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/files")
@@ -19,42 +19,71 @@ public class FileRestController {
     private final FileService fileService;
     @GetMapping
     public BaseRest<?> findAllFile(){
-        return BaseRest.builder()
+        return BaseRest
+                .builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .timestamp(LocalDateTime.now())
-                .data(null)
-                .message("File uploaded successfully.").build();
+                .data(fileService.findAllFile())
+                .message("File found successfully.")
+                .build();
     }
     @PostMapping("/uploaded-single")
-    public BaseRest<?> uploadSingle(@RequestPart("file") MultipartFile multipartFile){
-        log.info("File request = {}",multipartFile);
+    public BaseRest<?> uploadSingle(@RequestPart("file")  MultipartFile multipartFile){
         FileDto fileDto = fileService.uploadSingle(multipartFile);
-        return BaseRest.builder()
+        return BaseRest
+                .builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .timestamp(LocalDateTime.now())
                 .data(fileDto)
-                .message("File uploaded successfully.").build();
+                .message("File uploaded successfully.")
+                .build();
     }
     @PostMapping("/uploaded-multiple")
     public BaseRest<?> uploadMultiple(@RequestPart("files")List<MultipartFile> multipartFileList){
-        log.info("File request = {}",multipartFileList);
         List<FileDto> fileDtoList = fileService.uploadMultipleFile(multipartFileList);
-        return BaseRest.builder()
+        return BaseRest
+                .builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .timestamp(LocalDateTime.now())
                 .data(fileDtoList)
-                .message("File uploaded successfully.").build();
+                .message("Files uploaded successfully.")
+                .build();
     }
     @GetMapping("/{fileName}")
-    public BaseRest<?> findFileByName(@PathVariable("fileName") String name){
-        return BaseRest.builder()
+    public BaseRest<?> findFileByName(@PathVariable("fileName") String fileName){
+        return BaseRest
+                .builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .timestamp(LocalDateTime.now())
-                .data(null)
-                .message("File uploaded successfully.").build();
+                .data(fileService.findFileByName(fileName))
+                .message("Files selected successfully.")
+                .build();
+    }
+    @DeleteMapping
+    public BaseRest<?> removeAllFiles(){
+        fileService.removeAllFiles();
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .timestamp(LocalDateTime.now())
+                .data("All files has been deleted.")
+                .message("File has been deleted successfully.")
+                .build();
+    }
+    @DeleteMapping("/{fileName}")
+    public BaseRest<?> removeFile(@PathVariable String fileName){
+        return BaseRest
+                .builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .timestamp(LocalDateTime.now())
+                .data(fileService.removeFileByName(fileName))
+                .message("File has been deleted successfully.")
+                .build();
     }
 }
