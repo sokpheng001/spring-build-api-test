@@ -92,6 +92,10 @@ public class FileUtil {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,"File is not found, please contact the developer..🤣🤣🤣");
     }
+
+    /**
+     * used for remove all file in folder server
+     */
     public void removeAllFiles(){
         File file = new File(fileServerPath);
         File[] files = file.listFiles();

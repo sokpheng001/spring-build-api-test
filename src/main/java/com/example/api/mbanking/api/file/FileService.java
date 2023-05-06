@@ -31,20 +31,17 @@ public interface FileService {
      * @return List<FileDto>
      */
       List<FileDto> findAllFile();
-
     /**
      * used for remove all files
      */
     void removeAllFiles();
-
     /**
      * used for remove a file by a specific name
      */
     String removeFileByName(String fileName);
-
     /**
      * used for requesting the url for download file
      * @return fileDownloadDto
      */
-    FileDownloadDto downloadFile();
+    FileDownloadDto downloadFile(String fileName);
  }

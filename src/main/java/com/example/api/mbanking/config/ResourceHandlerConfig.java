@@ -6,14 +6,13 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class ResourceHandlerConfig implements WebMvcConfigurer {
+public class ResourceHandlerConfig implements WebMvcConfigurer{
     @Value("${file.server-path}")
     private String fileServerPath;
     @Value("${file.client-path}")
-    private String clientPath;
+    private String fileClientPath;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(clientPath)
-                .addResourceLocations("file: " + fileServerPath);
+        registry.addResourceHandler(fileClientPath).addResourceLocations("file: " + fileServerPath);
     }
 }

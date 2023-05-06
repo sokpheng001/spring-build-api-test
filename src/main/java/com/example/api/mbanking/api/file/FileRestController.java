@@ -92,8 +92,8 @@ public class FileRestController {
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .timestamp(LocalDateTime.now())
-                .data(null)
-                .message("File has been deleted successfully.")
+                .data(fileService.downloadFile(fileName))
+                .message("File for download")
                 .build();
     }
 }

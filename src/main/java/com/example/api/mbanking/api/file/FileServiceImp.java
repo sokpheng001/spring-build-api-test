@@ -4,10 +4,9 @@ import com.example.api.mbanking.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,6 +19,8 @@ public class FileServiceImp implements FileService{
     private String fileServerPath;
     @Value("${file.base-url}")
     private String fileBaseUrl;
+    @Value("${file.base-url-download}")
+    private String fileBaseUrlDownload;
     @Autowired
     private void setFileUtil(FileUtil fileUtil){
         this.fileUtil = fileUtil;
@@ -75,7 +76,30 @@ public class FileServiceImp implements FileService{
         return fileUtil.removeFileByName(fileName);
     }
     @Override
-    public FileDownloadDto downloadFile() {
+    public FileDownloadDto downloadFile(String fileName) {
+        File file = new File(fileServerPath);
+        File[] files = file.listFiles();
+        List<FileDto> fileDtoList = new ArrayList<>();
+        assert files != null;
+        try{
+            for(File file1: files){
+                String name = file1
+                        .getName()
+                        .substring(0,file1.getName().length()-4);
+                if(fileName.equals(name)){
+                    return FileDownloadDto
+                            .builder()
+                            .name(file1.getName())
+                            .url(fileBaseUrl + file1.getName())
+                            .downloadUrl(fileBaseUrlDownload + "api/v1/files/download/")
+                            .extension(file1.getName().substring(file1.getName().length()-3))
+                            .size(file1.length())
+                            .build();
+                }
+            }
+        }catch (Exception ignored){
+
+        }
         return null;
     }
 }
