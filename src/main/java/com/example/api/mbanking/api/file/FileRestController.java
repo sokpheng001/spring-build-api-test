@@ -78,8 +78,8 @@ public class FileRestController {
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .timestamp(LocalDateTime.now())
-                .data("All files has been deleted.")
-                .message("File has been deleted successfully.")
+                .data("All files has been removed.")
+                .message("File has been removed successfully.")
                 .build();
     }
     @DeleteMapping("/{fileName}")
@@ -90,7 +90,7 @@ public class FileRestController {
                 .code(HttpStatus.OK.value())
                 .timestamp(LocalDateTime.now())
                 .data(fileService.removeFileByName(fileName))
-                .message("File has been deleted successfully.")
+                .message("File has been removed successfully.")
                 .build();
     }
     @GetMapping("/download/{filename}")

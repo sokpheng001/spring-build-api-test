@@ -4,6 +4,7 @@ import com.example.api.mbanking.api.file.FileDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -46,7 +47,8 @@ public class FileUtil {
                     .size(size)
                     .build();
         } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Uploading failed...!");
+//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Uploading failed...!");
+            throw new MultipartException("Cannot upload file");
         }
     }
     /**
@@ -82,12 +84,13 @@ public class FileUtil {
     public String removeFileByName(String fileName){
         File file = new File(fileServerPath);
         File[] files = file.listFiles();
+        assert files != null;//we used for checking NullPointer Exception
         for(File file1: files){
 //            String name = file1
 //                    .getName()
 //                    .substring(0,file1.getName().length()-4);
             if(file1.getName().startsWith(fileName)){
-                file1.delete();
+                file1.deleteOnExit();
                 return "File " +  fileName + " is removed successfully.";
             }
 //            assert file1.getName().startsWith(fileName);
@@ -103,8 +106,9 @@ public class FileUtil {
         File[] files = file.listFiles();
         List<FileDto> fileDtoList = new ArrayList<>();
         try{
+            assert files != null;//we used for checking NullPointer Exception
             for(File file1: files){
-                file1.delete();
+                file1.deleteOnExit();
             }
         }catch (Exception exception){
             return;

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -78,6 +79,12 @@ public class ApiException {
                 .error(e.getMessage()+": 1MB (1024KB)")
                 .build();
     }
+
+    /**
+     *
+     * @param e used for catching RuntimeException
+     * @return BaseError<?>
+     */
     @ExceptionHandler(RuntimeException.class)
     public BaseError<?> handleNoFileForDownload(RuntimeException e){
         return BaseError.builder()
@@ -86,6 +93,16 @@ public class ApiException {
                 .timestamp(LocalDateTime.now())
                 .message("File is not exited.")
                 .error(e.getMessage())
+                .build();
+    }
+    @ExceptionHandler(MultipartException.class)
+    public BaseError<?> handleMultipart(MultipartException multipartException){
+        return BaseError.builder()
+                .status(false)
+                .code(HttpStatus.NOT_FOUND.ordinal())
+                .timestamp(LocalDateTime.now())
+                .message("File is not exited.")
+                .error(multipartException.getMessage())
                 .build();
     }
 }
