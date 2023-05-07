@@ -2,6 +2,7 @@ package com.example.api.mbanking.exception;
 
 import com.example.api.mbanking.base.BaseError;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -22,7 +22,6 @@ import java.util.Map;
 @Slf4j
 public class ApiException {
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-
     /**
      *
      * @param e used for handle respondStatusException
@@ -36,7 +35,7 @@ public class ApiException {
                 .code(e.getStatusCode().value())
                 .timestamp(LocalDateTime.now())
                 .message("Something went wrong...!!!, please check.")
-                .error(e.getMessage())
+                .error(e.getReason())
                 .build();
     }
 
@@ -85,6 +84,7 @@ public class ApiException {
      * @param e used for catching RuntimeException
      * @return BaseError<?>
      */
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(RuntimeException.class)
     public BaseError<?> handleNoFileForDownload(RuntimeException e){
         return BaseError.builder()
@@ -95,14 +95,21 @@ public class ApiException {
                 .error(e.getMessage())
                 .build();
     }
-    @ExceptionHandler(MultipartException.class)
-    public BaseError<?> handleMultipart(MultipartException multipartException){
+
+    /**
+     *
+     * @param nullPointerException used for catching nullPointerException
+     * @return BaseError<?>
+     */
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public BaseError<?> handleMultipart(NullPointerException nullPointerException){
         return BaseError.builder()
                 .status(false)
-                .code(HttpStatus.NOT_FOUND.ordinal())
+                .code(HttpStatus.NOT_FOUND.value())
                 .timestamp(LocalDateTime.now())
                 .message("File is not exited.")
-                .error(multipartException.getMessage())
+                .error("File is not found.")
                 .build();
     }
 }

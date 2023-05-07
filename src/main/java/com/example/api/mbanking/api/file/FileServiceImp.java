@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -35,7 +37,7 @@ public class FileServiceImp implements FileService{
         File file = new File(fileServerPath);
         File[] files = file.listFiles();
         List<FileDto> fileDtoList = new ArrayList<>();
-        assert files != null;
+        assert files != null;// use assert to make sure that files is not null.
         for(File file1: files){
             int indexForGettingFileExtension = file1.getName().lastIndexOf(".") + 1;
             fileDtoList
@@ -43,7 +45,7 @@ public class FileServiceImp implements FileService{
                             new FileDto(
                                     file1.getName()
                                     ,fileBaseUrl + file1.getName()
-                                    ,fileBaseUrlDownload + file1.getName()
+                                    ,fileBaseUrlDownload + file1.getName().substring(0,file1.getName().length()-4)
                                     ,file1.getName().substring(indexForGettingFileExtension)
                                     ,file1.length()
                             )
@@ -87,18 +89,21 @@ public class FileServiceImp implements FileService{
         Path path = null;
         Resource resource;
         try {
-            assert files != null;
+            assert files != null;// use assert to make sure that files is not null
             for(File file1 : files){
 //                assert file1.getName().startsWith(filename);// we can used assert instead of (if or throw) statement
 //                path  = Paths.get(fileServerPath + file1.getName()).toAbsolutePath().normalize();
-                if(file1.getName().startsWith(filename)){
+                String name = file1
+                        .getName()
+                        .substring(0,file1.getName().length()-4); // -> use this to get file name without extension
+                if(name.equals(filename)){
                     path  = Paths.get(fileServerPath + file1.getName()).toAbsolutePath().normalize();
                 }
             }
             assert path != null;
             resource = new UrlResource(path.toUri());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"File is not found.");
         }
         return resource;
     }

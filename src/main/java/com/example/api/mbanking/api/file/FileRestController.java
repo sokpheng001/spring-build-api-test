@@ -9,6 +9,7 @@ import org.springframework.http.*;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,7 +33,7 @@ public class FileRestController {
                 .code(HttpStatus.OK.value())
                 .timestamp(LocalDateTime.now())
                 .data(fileService.findAllFile())
-                .message("File found successfully.")
+                .message("Files found successfully.")
                 .build();
     }
     @PostMapping("/uploaded-single")
@@ -67,7 +68,7 @@ public class FileRestController {
                 .code(HttpStatus.OK.value())
                 .timestamp(LocalDateTime.now())
                 .data(fileService.findFileByName(fileName))
-                .message("Files selected successfully.")
+                .message("Files found successfully.")
                 .build();
     }
     @DeleteMapping
@@ -78,8 +79,8 @@ public class FileRestController {
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .timestamp(LocalDateTime.now())
-                .data("All files has been removed.")
-                .message("File has been removed successfully.")
+                .data("All files have been removed.")
+                .message("Files have been removed successfully.")
                 .build();
     }
     @DeleteMapping("/{fileName}")
@@ -98,11 +99,13 @@ public class FileRestController {
         Resource resource = fileService.downloadFile(filename);
         this.downloadLink = "Download link: " + fileBaseDownloadUrl + filename;
         System.out.println(downloadLink);
-        System.out.println(resource.getFilename());
-        return ResponseEntity
-                .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .varyBy(downloadLink)
-                .body(resource);
+        try {
+            return ResponseEntity
+                    .ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+        }catch (ResponseStatusException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "File is not found.");
+        }
     }
 }
