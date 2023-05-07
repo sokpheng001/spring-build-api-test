@@ -114,7 +114,7 @@ public class FileUtil {
         }
     }
     @NotNull
-    private String name(String name, File file1){
+    public String name(String name, File file1){
         if(file1.getName().length()==40){
             name = file1
                     .getName()

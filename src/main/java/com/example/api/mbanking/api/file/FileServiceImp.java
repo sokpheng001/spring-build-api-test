@@ -92,15 +92,13 @@ public class FileServiceImp implements FileService{
             assert files != null;// use assert to make sure that files is not null
             for(File file1 : files){
 //                assert file1.getName().startsWith(filename);// we can used assert instead of (if or throw) statement
-//                path  = Paths.get(fileServerPath + file1.getName()).toAbsolutePath().normalize();
-                String name = file1
-                        .getName()
-                        .substring(0,file1.getName().length()-4); // -> use this to get file name without extension
+//                path  = Paths.get(fileServerPath + file1.getName()).toAbsolutePath().normalize();// -> use this to get file name without extension
+                String name = fileUtil.name(filename,file1);
                 if(name.equals(filename)){
                     path  = Paths.get(fileServerPath + file1.getName()).toAbsolutePath().normalize();
                 }
             }
-            assert path != null;
+            assert path != null;//-> use to make sure that path is not null
             resource = new UrlResource(path.toUri());
         } catch (MalformedURLException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"File is not found.");
