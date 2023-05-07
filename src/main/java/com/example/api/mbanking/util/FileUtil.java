@@ -62,7 +62,6 @@ public class FileUtil {
         assert files != null;// use to make sure that files is not null
         for(File file1: files){
             String name = this.name(fileName, file1);//-> use this to get file name without extension
-            System.out.println(name);//
             if(name.equals(fileName)){
                 int getExtension = file1.getName().lastIndexOf(".") + 1;
                 return FileDto
