@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,6 +76,16 @@ public class ApiException {
                 .timestamp(LocalDateTime.now())
                 .message("Please check file size again.")
                 .error(e.getMessage()+": 1MB (1024KB)")
+                .build();
+    }
+    @ExceptionHandler(RuntimeException.class)
+    public BaseError<?> handleNoFileForDownload(RuntimeException e){
+        return BaseError.builder()
+                .status(false)
+                .code(HttpStatus.NOT_FOUND.ordinal())
+                .timestamp(LocalDateTime.now())
+                .message("File is not exited.")
+                .error(e.getMessage())
                 .build();
     }
 }

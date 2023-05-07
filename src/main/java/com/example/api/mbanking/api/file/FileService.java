@@ -1,5 +1,6 @@
 package com.example.api.mbanking.api.file;
 
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,5 +45,5 @@ public interface FileService {
      * used for requesting the url for download file
      * @return fileDownloadDto
      */
-    ResponseEntity<?> downloadFile(String fileName);
+    Resource downloadFile(String fileName);
  }

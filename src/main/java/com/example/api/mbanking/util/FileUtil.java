@@ -22,7 +22,8 @@ public class FileUtil {
     private String fileServerPath;
     @Value("${file.base-url}")
     private String fileBaseUrl;
-
+    @Value("${file.base-url-download}")
+    private String fileBaseDownloadUrl;
     /**
      *
      * @param multipartFile used for uplaoding file
@@ -40,6 +41,7 @@ public class FileUtil {
             return FileDto.builder()
                     .name(fileName)
                     .url(url)
+                    .downloadUrl(fileBaseDownloadUrl + fileName)
                     .extension(extension)
                     .size(size)
                     .build();
@@ -56,14 +58,15 @@ public class FileUtil {
         File file = new File(fileServerPath);
         File[] files = file.listFiles();
         for(File file1: files){
-            String name = file1
-                    .getName()
-                    .substring(0,file1.getName().length()-4);
-            if(fileName.equals(name)){
+//            String name = file1
+//                    .getName()
+//                    .substring(0,file1.getName().length()-4);
+            if(file1.getName().startsWith(fileName)){
                 return FileDto
                         .builder()
                         .name(file1.getName())
                         .url(fileBaseUrl + file1.getName())
+                        .downloadUrl(fileBaseDownloadUrl + file1.getName())
                         .extension(file1.getName().substring(file1.getName().length()-3))
                         .size(file1.length())
                         .build();
@@ -79,15 +82,16 @@ public class FileUtil {
     public String removeFileByName(String fileName){
         File file = new File(fileServerPath);
         File[] files = file.listFiles();
-        List<FileDto> fileDtoList = new ArrayList<>();
         for(File file1: files){
-            String name = file1
-                    .getName()
-                    .substring(0,file1.getName().length()-4);
-            if(fileName.equals(name)){
+//            String name = file1
+//                    .getName()
+//                    .substring(0,file1.getName().length()-4);
+            if(file1.getName().startsWith(fileName)){
                 file1.delete();
                 return "File " +  fileName + " is removed successfully.";
             }
+//            assert file1.getName().startsWith(fileName);
+//            file1.delete();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,"File is not found, please contact the developer..🤣🤣🤣");
     }

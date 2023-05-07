@@ -1,11 +1,7 @@
 package com.example.api.mbanking.api.file;
 
 import lombok.Builder;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.RequestEntity;
 
-import java.net.URI;
-import java.net.URL;
 
 @Builder
 

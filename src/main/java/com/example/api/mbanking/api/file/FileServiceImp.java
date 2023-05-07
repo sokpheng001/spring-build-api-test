@@ -6,17 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -50,6 +43,7 @@ public class FileServiceImp implements FileService{
                             new FileDto(
                                     file1.getName()
                                     ,fileBaseUrl + file1.getName()
+                                    ,fileBaseUrlDownload + file1.getName()
                                     ,file1.getName().substring(indexForGettingFileExtension)
                                     ,file1.length()
                             )
@@ -87,40 +81,26 @@ public class FileServiceImp implements FileService{
         return fileUtil.removeFileByName(fileName);
     }
 
-
     @Override
-    @GetMapping("/download/{filename}")
-    public ResponseEntity<?> downloadFile(String filename) {
-        System.out.println(filename);
-        File file = new File(filename);
-        File[] files = file.listFiles();
-        Path path  = Paths.get(fileServerPath + filename + ".png").toAbsolutePath().normalize();
-        Resource resource = null;
-        System.out.println(path);
+    public Resource downloadFile(String filename) {
+        File file = new File(fileServerPath);
+        File [] files = file.listFiles();
+        Path path = null;
+        Resource resource;
         try {
+            assert files != null;
+            for(File file1 : files){
+//                assert file1.getName().startsWith(filename);// we can used assert instead of (if or throw) statement
+//                path  = Paths.get(fileServerPath + file1.getName()).toAbsolutePath().normalize();
+                if(file1.getName().startsWith(filename)){
+                    path  = Paths.get(fileServerPath + file1.getName()).toAbsolutePath().normalize();
+                }
+            }
+            assert path != null;
             resource = new UrlResource(path.toUri());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(resource.getFilename());
-        System.out.println(fileBaseUrl + "api/v1/files/download/" + filename );
-        ResponseEntity <?> responseEntity = ResponseEntity
-                .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(
-                        FileDownloadDto
-                                .builder()
-                                .size(filename.length())
-                                .url(filename)
-                                .extension("png")
-                                .downloadUrl(fileBaseUrl + "api/v1/files/download/" + filename)
-                                .build()
-                )
-                ;
-        return responseEntity;
-//        return FileDownloadDto.builder()
-//                .downloadUrl(URI.create(fileBaseUrl + "api/v1/files/download/" + filename).toURL())
-//                .build();
+        return resource;
     }
-    //
 }
