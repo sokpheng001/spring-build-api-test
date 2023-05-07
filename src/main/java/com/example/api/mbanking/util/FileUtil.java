@@ -1,7 +1,6 @@
 package com.example.api.mbanking.util;
 
 import com.example.api.mbanking.api.file.FileDto;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
