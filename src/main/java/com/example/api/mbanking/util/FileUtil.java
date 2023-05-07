@@ -55,7 +55,6 @@ public class FileUtil {
     public FileDto findFileByName(String fileName){
         File file = new File(fileServerPath);
         File[] files = file.listFiles();
-        List<FileDto> fileDtoList = new ArrayList<>();
         for(File file1: files){
             String name = file1
                     .getName()
@@ -92,7 +91,6 @@ public class FileUtil {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,"File is not found, please contact the developer..🤣🤣🤣");
     }
-
     /**
      * used for remove all file in folder server
      */
@@ -100,7 +98,6 @@ public class FileUtil {
         File file = new File(fileServerPath);
         File[] files = file.listFiles();
         List<FileDto> fileDtoList = new ArrayList<>();
-        assert files != null;
         try{
             for(File file1: files){
                 file1.delete();

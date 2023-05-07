@@ -4,11 +4,22 @@ import com.example.api.mbanking.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,31 +86,41 @@ public class FileServiceImp implements FileService{
     public String removeFileByName(String fileName) {
         return fileUtil.removeFileByName(fileName);
     }
-    @Override
-    public FileDownloadDto downloadFile(String fileName) {
-        File file = new File(fileServerPath);
-        File[] files = file.listFiles();
-        List<FileDto> fileDtoList = new ArrayList<>();
-        assert files != null;
-        try{
-            for(File file1: files){
-                String name = file1
-                        .getName()
-                        .substring(0,file1.getName().length()-4);
-                if(fileName.equals(name)){
-                    return FileDownloadDto
-                            .builder()
-                            .name(file1.getName())
-                            .url(fileBaseUrl + file1.getName())
-                            .downloadUrl(fileBaseUrlDownload + "api/v1/files/download/")
-                            .extension(file1.getName().substring(file1.getName().length()-3))
-                            .size(file1.length())
-                            .build();
-                }
-            }
-        }catch (Exception ignored){
 
+
+    @Override
+    @GetMapping("/download/{filename}")
+    public ResponseEntity<?> downloadFile(String filename) {
+        System.out.println(filename);
+        File file = new File(filename);
+        File[] files = file.listFiles();
+        Path path  = Paths.get(fileServerPath + filename + ".png").toAbsolutePath().normalize();
+        Resource resource = null;
+        System.out.println(path);
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
         }
-        return null;
+        System.out.println(resource.getFilename());
+        System.out.println(fileBaseUrl + "api/v1/files/download/" + filename );
+        ResponseEntity <?> responseEntity = ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(
+                        FileDownloadDto
+                                .builder()
+                                .size(filename.length())
+                                .url(filename)
+                                .extension("png")
+                                .downloadUrl(fileBaseUrl + "api/v1/files/download/" + filename)
+                                .build()
+                )
+                ;
+        return responseEntity;
+//        return FileDownloadDto.builder()
+//                .downloadUrl(URI.create(fileBaseUrl + "api/v1/files/download/" + filename).toURL())
+//                .build();
     }
+    //
 }

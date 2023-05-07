@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,14 +29,14 @@ public class ApiException {
      * @return BaseError<?>
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResponseStatusException.class)
+    @ExceptionHandler({ResponseStatusException.class})
     public BaseError<?> handleServiceException(ResponseStatusException e){
         return BaseError.builder()
                 .status(false)
                 .code(e.getStatusCode().value())
                 .timestamp(LocalDateTime.now())
                 .message("Something went wrong...!!!, please check.")
-                .error(e.getReason())
+                .error(e.getMessage())
                 .build();
     }
 
