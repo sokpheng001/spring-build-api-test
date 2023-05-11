@@ -30,6 +30,8 @@ public class NotificationServiceIpm implements NotificationService {
         headers.set("accept", "application/json");
         headers.set("Authorization", "Basic " + restApiKey);
         headers.set("content-type", "application/json");
+        System.out.println(headers.getAccept());
+        System.out.println(headers.getDate());
         NotificationDto notificationDto = NotificationDto.builder()
                 .contents(createNotificationDto.contents())
                 .appId(appId)
@@ -40,6 +42,7 @@ public class NotificationServiceIpm implements NotificationService {
                 ,httpEntity
                 ,Map.class
         );
+        System.out.println(responseEntity.getHeaders().getAccessControlAllowHeaders());
         System.out.println(responseEntity.getStatusCode());
         System.out.println(responseEntity.getBody());
         return (responseEntity.getStatusCode()== HttpStatus.OK);

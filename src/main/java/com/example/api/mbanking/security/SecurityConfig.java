@@ -30,7 +30,7 @@ public class SecurityConfig {
         InMemoryUserDetailsManager inMemoryUserDetailsManager  = new InMemoryUserDetailsManager();
         //
         System.out.println("========================================================");
-        System.out.println(new BCryptPasswordEncoder().encode("Kim ChansokPheng"));
+        System.out.println("Kim ChansokPheng: " + new BCryptPasswordEncoder().encode("Kim ChansokPheng"));
         System.out.println("========================================================");
         //
         inMemoryUserDetailsManager.createUser(securityUtil.userDetails("account","1234","ACCOUNT"));
