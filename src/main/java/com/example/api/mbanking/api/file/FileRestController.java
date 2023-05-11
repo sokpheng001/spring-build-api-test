@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("/api/v1/files")
 @Slf4j
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:3000")
 public class FileRestController {
     private final FileService fileService;
     @Value("${file.base-url-download}")

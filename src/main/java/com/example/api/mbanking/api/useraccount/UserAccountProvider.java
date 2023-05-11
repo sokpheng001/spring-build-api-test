@@ -7,10 +7,13 @@ import javax.naming.SizeLimitExceededException;
 
 public class UserAccountProvider {
     private final String tableName = "user_accounts";
+    private final String tableName1 = "users";
     public String buildSelectAllSql(){
         return new SQL(){{
             SELECT("*");
             FROM(tableName);
+            JOIN(tableName1 + " ON user_accounts.user_id = users.id");
+            ORDER_BY("user_accounts.id DESC");
         }}.toString();
     }
     public String buildInsertSql(){

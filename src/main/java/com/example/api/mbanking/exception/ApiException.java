@@ -3,6 +3,7 @@ package com.example.api.mbanking.exception;
 import com.example.api.mbanking.base.BaseError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -60,6 +61,16 @@ public class ApiException {
                 .timestamp(LocalDateTime.now())
                 .message("Error")
                 .error(errors)
+                .build();
+    }
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public BaseError<?> handlerForDeletingForeignKey(DataIntegrityViolationException e){
+        return BaseError.builder()
+                .status(false)
+                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .timestamp(LocalDateTime.now())
+                .message("Cannot delete account by this id, cuz this id is a foreign ky of another table.")
+                .error("Cannot delete account.")
                 .build();
     }
     /**

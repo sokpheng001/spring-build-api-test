@@ -25,7 +25,9 @@ public class AccountServiceIpm implements AccountService{
 
     @Override
     public PageInfo<AccountDto> selectAll(int page, int limit) {
+
         PageInfo<Account> accountPage = PageHelper.startPage(page, limit).doSelectPageInfo(accountMapper::select);
+
         return accountMapStruct.fromPageInfoAccountToPageInfoAccountDto(accountPage);
     }
     @Override
@@ -34,7 +36,6 @@ public class AccountServiceIpm implements AccountService{
         accountMapper.insert(account);
         return accountMapStruct.fromCreateAccountDtoToAccountDto(createAccountDto);
     }
-
     @Override
     public AccountDto searchAccountById(Integer id) {
         if(accountMapper.isExistedById(id)){
@@ -44,7 +45,6 @@ public class AccountServiceIpm implements AccountService{
         throw new ResponseStatusException(HttpStatus.NOT_FOUND
                 ,String.format("User with id %d is not found...!",id));
     }
-
     @Override
     public AccountDto updateAccountById(Integer id, UpdateAccountDto updateAccountDto) {
         if(accountMapper.isExistedById(id)) {

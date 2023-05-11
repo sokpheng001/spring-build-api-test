@@ -48,7 +48,7 @@ public class UserRestController {
                 .builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("All users has been deleted successfully")
+                .message("All users has been found successfully")
                 .timestamp(LocalDateTime.now())
                 .data(pageInfo)
                 .build();

@@ -1,20 +1,16 @@
 package com.example.api.mbanking.api.account;
 
 import org.apache.ibatis.jdbc.SQL;
-import org.springframework.dao.support.PersistenceExceptionTranslationInterceptor;
-
-import java.awt.*;
-import java.nio.file.WatchEvent;
 
 public class AccountProvider {
     private final String tableName = "accounts";
     private final String getTableName = "account_types";
-//    public String buildSelectAllSql(){
-//        return new SQL(){{
-//            SELECT("*");
-//            FROM(tableName);
-//        }}.toString();
-//    }
+    public String buildSelectAllSql(){
+        return new SQL(){{
+            SELECT("*");
+            FROM(tableName);
+        }}.toString();
+    }
     public String buildInsertSql(){
         return new SQL(){{
             INSERT_INTO(tableName);
@@ -32,6 +28,7 @@ public class AccountProvider {
         return new SQL(){{
             SELECT("*");
             FROM(tableName);
+//            JOIN(getTableName + " ON accounts.account_type = account_types.id");
             WHERE("id = #{id}");
         }}.toString();
     }

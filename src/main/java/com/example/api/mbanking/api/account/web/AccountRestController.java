@@ -37,7 +37,7 @@ public class AccountRestController {
                 .builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("Accounts has been selected successfully")
+                .message("Accounts have been selected successfully")
                 .timestamp(LocalDateTime.now())
                 .data(pageInfo)
                 .build();

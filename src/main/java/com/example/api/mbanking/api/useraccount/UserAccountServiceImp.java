@@ -22,8 +22,8 @@ public class UserAccountServiceImp implements UserAccountService {
     }
     @Override
     public UserAccountDto createUserAccount(CreateUserAccountDto createUserAccountDto) {
-        UserAccount userAccount = userAccountMapStruct.fromCreateUserAccountDtoToUserAccount(createUserAccountDto);
         userAccountMapper.insertUserAccount(createUserAccountDto);
+        UserAccount userAccount = userAccountMapStruct.fromCreateUserAccountDtoToUserAccount(createUserAccountDto);
         return userAccountMapStruct.fromUserAccountToUserAccountDto(userAccount);
     }
     @Override
