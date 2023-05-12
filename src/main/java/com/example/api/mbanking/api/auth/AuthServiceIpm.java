@@ -33,6 +33,7 @@ public class AuthServiceIpm implements AuthService{
     @Override
     public void verify(String email) {
         User user = authMapper.selectByEmail(email);
+        System.out.println(email);
         MailUtil.Meta<?> meta = MailUtil.Meta.builder()
                 .to(email)
                 .from(appMail)
