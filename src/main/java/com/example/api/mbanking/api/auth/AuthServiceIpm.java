@@ -32,8 +32,9 @@ public class AuthServiceIpm implements AuthService{
     }
     @Override
     public void verify(String email) {
-        User user = authMapper.selectByEmail(email);
-        System.out.println(email);
+        User user = authMapper.selectByEmail(email).orElseThrow(()
+                -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Email is not found."));
+        System.out.println(user);
         MailUtil.Meta<?> meta = MailUtil.Meta.builder()
                 .to(email)
                 .from(appMail)

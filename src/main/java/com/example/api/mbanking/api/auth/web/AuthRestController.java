@@ -1,5 +1,6 @@
-package com.example.api.mbanking.api.auth;
+package com.example.api.mbanking.api.auth.web;
 
+import com.example.api.mbanking.api.auth.AuthService;
 import com.example.api.mbanking.api.auth.web.RegisterDto;
 import com.example.api.mbanking.base.BaseRest;
 import jakarta.validation.Valid;
@@ -31,7 +32,7 @@ public class AuthRestController {
         return BaseRest.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("")
+                .message("Please check email to verify.")
                 .timestamp(LocalDateTime.now())
                 .data(email)
                 .build();
