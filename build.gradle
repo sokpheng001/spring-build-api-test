@@ -19,6 +19,10 @@ repositories {
 }
 
 dependencies {
+    //thymeleaf
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
+    //mail
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail'
     // security
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
     //JPA
@@ -30,7 +34,7 @@ dependencies {
 
     //
     // https://mvnrepository.com/artifact/org.projectlombok/lombok-mapstruct-binding
-    implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
     // https://mvnrepository.com/artifact/org.mapstruct/mapstruct
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     // https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor

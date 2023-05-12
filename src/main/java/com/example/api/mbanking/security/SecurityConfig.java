@@ -21,10 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private final SecurityUtil securityUtil;
     // Define in-memory
-    @Bean
-    public PasswordEncoder encoder(){
-        return new BCryptPasswordEncoder();
-    }
+    private final SecurityBean securityBean;
     @Bean
     public UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager inMemoryUserDetailsManager  = new InMemoryUserDetailsManager();

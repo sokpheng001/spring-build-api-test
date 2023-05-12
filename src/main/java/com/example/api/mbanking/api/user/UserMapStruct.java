@@ -1,5 +1,6 @@
 package com.example.api.mbanking.api.user;
 
+import com.example.api.mbanking.api.auth.web.RegisterDto;
 import com.example.api.mbanking.api.user.web.CreateUserDto;
 import com.example.api.mbanking.api.user.web.UpdateUserDto;
 import com.example.api.mbanking.api.user.web.UserDto;
@@ -17,4 +18,5 @@ public interface UserMapStruct {
     PageInfo<UserDto> userPageInfoToUserDtoPageInfo(PageInfo<User> userPageInfo);
     //search
     List<UserDto> fromUserListToUserDtoList(List<User> users);
+    User fromRegisterDtoToUser(RegisterDto registerDto);
 }

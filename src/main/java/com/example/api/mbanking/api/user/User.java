@@ -13,4 +13,10 @@ public class User {
     private String studentCardId;
     private Boolean isStudent;
     private Boolean isDeleted;
+    //Auth
+    private String email;
+    private String password;
+    private Boolean isVerified;
+    private String verifiedCode;
+
 }

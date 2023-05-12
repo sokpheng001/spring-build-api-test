@@ -3,6 +3,7 @@ package com.example.api.mbanking.api.account.web;
 
 import com.example.api.mbanking.api.account.AccountService;
 import com.example.api.mbanking.base.BaseRest;
+import com.example.api.mbanking.security.SecurityConfig;
 import com.github.pagehelper.PageInfo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
