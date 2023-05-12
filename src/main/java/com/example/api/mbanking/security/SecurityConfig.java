@@ -43,22 +43,22 @@ public class SecurityConfig {
         httpSecurity.csrf().disable().httpBasic();
         httpSecurity
                 .authorizeHttpRequests()
-                .requestMatchers("api/v1/users/**")
+                .requestMatchers("/api/v1/users/**")
                 .hasAnyRole("ADMIN");
         httpSecurity.authorizeHttpRequests()
-                        .requestMatchers("api/v1/user-accounts/**")
+                        .requestMatchers("a/pi/v1/user-accounts/**")
                                 .hasRole("USER_ACCOUNT");
         httpSecurity.authorizeHttpRequests()
-                        .requestMatchers("api/v1/accounts/**")
+                        .requestMatchers("/api/v1/accounts/**")
                                 .hasRole("ACCOUNT");
         httpSecurity.authorizeHttpRequests()
-                        .requestMatchers("api/v1/account-types/**")
+                        .requestMatchers("/api/v1/account-types/**")
                                 .hasRole("ACCOUNT_TYPE");
         httpSecurity.authorizeHttpRequests()
-                        .requestMatchers("api/v1/notifications")
+                        .requestMatchers("/api/v1/notifications")
                                 .hasRole("NOTIFICATION");
         httpSecurity.authorizeHttpRequests()
-                        .requestMatchers("api/v1/files/**")
+                        .requestMatchers("/api/v1/files/**")
                                 .hasRole("FILE")
                 .anyRequest()
                 .permitAll();

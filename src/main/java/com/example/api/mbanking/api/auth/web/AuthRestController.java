@@ -1,7 +1,6 @@
 package com.example.api.mbanking.api.auth.web;
 
 import com.example.api.mbanking.api.auth.AuthService;
-import com.example.api.mbanking.api.auth.web.RegisterDto;
 import com.example.api.mbanking.base.BaseRest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +14,17 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AuthRestController {
     private final AuthService authService;
+    @GetMapping("/check-verify")
+    public BaseRest<?> checkVerifiedCode(@RequestParam(required = false) String email, @RequestParam(required = false) String verifiedCode){
+        System.out.println(email);
+        return BaseRest.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("You have registered successfully.")
+                .timestamp(LocalDateTime.now())
+                .data(null)
+                .build();
+    }
     @PostMapping("/register")
     public BaseRest<?> register(@Valid @RequestBody RegisterDto registerDto){
         authService.register(registerDto);
