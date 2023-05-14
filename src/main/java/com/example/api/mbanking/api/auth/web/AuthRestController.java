@@ -16,13 +16,18 @@ public class AuthRestController {
     private final AuthService authService;
     @GetMapping("/check-verify")
     public BaseRest<?> checkVerifiedCode(@RequestParam(required = false) String email, @RequestParam(required = false) String verifiedCode){
-        System.out.println(email);
+        String message;
+        if(authService.checkVerifiedCode(verifiedCode)){
+            message = "Verified successfully.";
+        }else {
+            message = "Failed to verify";
+        }
         return BaseRest.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("You have registered successfully.")
+                .message(message)
                 .timestamp(LocalDateTime.now())
-                .data(null)
+                .data(authService.checkVerifiedCode(verifiedCode))
                 .build();
     }
     @PostMapping("/register")

@@ -60,8 +60,7 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests()
                         .requestMatchers("/api/v1/files/**")
                                 .hasRole("FILE")
-                .anyRequest()
-                .permitAll();
+                                        .anyRequest().permitAll();
         httpSecurity
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

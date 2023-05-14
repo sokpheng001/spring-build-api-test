@@ -9,6 +9,7 @@ public class AuthProvider {
             VALUES("email","#{u.email}");
             VALUES("password","#{u.password}");
             VALUES("is_verified","#{u.isVerified}");
+            VALUES("verified_code","#{u.verifiedCode}");
             VALUES("is_deleted","FALSE");
         }}.toString();
     }

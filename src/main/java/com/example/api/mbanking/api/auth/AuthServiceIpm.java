@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -27,6 +29,7 @@ public class AuthServiceIpm implements AuthService{
     public void register(RegisterDto registerDto) {
         User user = userMapStruct.fromRegisterDtoToUser(registerDto);
         user.setPassword(securityBean.encoder().encode(registerDto.password()));
+        user.setVerifiedCode(UUID.randomUUID().toString());
         log.info("User: {}",user);
         authMapper.register(user);
     }
@@ -34,7 +37,7 @@ public class AuthServiceIpm implements AuthService{
     public void verify(String email) {
         User user = authMapper.selectByEmail(email).orElseThrow(()
                 -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Email is not found."));
-        System.out.println(user);
+        System.out.println("Verify Code: " + user);
         MailUtil.Meta<?> meta = MailUtil.Meta.builder()
                 .to(email)
                 .from(appMail)
@@ -47,5 +50,10 @@ public class AuthServiceIpm implements AuthService{
         } catch (MessagingException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Mail has been failed to send");
         }
+    }
+
+    @Override
+    public boolean checkVerifiedCode(String verifiedCode) {
+        return authMapper.checkByVerifiedCode(verifiedCode);
     }
 }
