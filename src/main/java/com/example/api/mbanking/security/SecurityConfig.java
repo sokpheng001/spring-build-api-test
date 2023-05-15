@@ -4,6 +4,8 @@ import com.example.api.mbanking.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,21 +24,29 @@ public class SecurityConfig {
     private final SecurityUtil securityUtil;
     // Define in-memory
     private final SecurityBean securityBean;
+    private final UserDetailsServiceImp userDetailsServiceImp;
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        InMemoryUserDetailsManager inMemoryUserDetailsManager  = new InMemoryUserDetailsManager();
+//        //
+//        System.out.println("========================================================");
+//        System.out.println("Kim ChansokPheng: " + new BCryptPasswordEncoder().encode("Kim ChansokPheng"));
+//        System.out.println("========================================================");
+//        //
+//        inMemoryUserDetailsManager.createUser(securityUtil.userDetails("account","1234","ACCOUNT"));
+//        inMemoryUserDetailsManager.createUser(securityUtil.userDetails("account type","234","ACCOUNT_TYPE"));
+//        inMemoryUserDetailsManager.createUser(securityUtil.userDetails("notification","456","NOTIFICATION"));
+//        inMemoryUserDetailsManager.createUser(securityUtil.userDetails("admin","123","ADMIN"));
+//        inMemoryUserDetailsManager.createUser(securityUtil.userDetails("file","file123","FILE"));
+//        inMemoryUserDetailsManager.createUser(securityUtil.userDetails("user account","123","USER_ACCOUNT"));
+//        return inMemoryUserDetailsManager;
+//    }
     @Bean
-    public UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager inMemoryUserDetailsManager  = new InMemoryUserDetailsManager();
-        //
-        System.out.println("========================================================");
-        System.out.println("Kim ChansokPheng: " + new BCryptPasswordEncoder().encode("Kim ChansokPheng"));
-        System.out.println("========================================================");
-        //
-        inMemoryUserDetailsManager.createUser(securityUtil.userDetails("account","1234","ACCOUNT"));
-        inMemoryUserDetailsManager.createUser(securityUtil.userDetails("account type","234","ACCOUNT_TYPE"));
-        inMemoryUserDetailsManager.createUser(securityUtil.userDetails("notification","456","NOTIFICATION"));
-        inMemoryUserDetailsManager.createUser(securityUtil.userDetails("admin","123","ADMIN"));
-        inMemoryUserDetailsManager.createUser(securityUtil.userDetails("file","file123","FILE"));
-        inMemoryUserDetailsManager.createUser(securityUtil.userDetails("user account","123","USER_ACCOUNT"));
-        return inMemoryUserDetailsManager;
+    public DaoAuthenticationProvider daoAuthenticationProvider(){
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsServiceImp);
+        authenticationProvider.setPasswordEncoder(securityBean.encoder());
+        return authenticationProvider;
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {

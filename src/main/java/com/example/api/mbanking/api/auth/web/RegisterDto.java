@@ -2,7 +2,10 @@ package com.example.api.mbanking.api.auth.web;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
+
+import java.util.List;
 
 @Builder
 public record RegisterDto(
@@ -12,6 +15,8 @@ public record RegisterDto(
         @NotBlank(message = "Password is required.")
         String password,
         @NotBlank(message = "Confirmed Password is required.")
-        String confirmedPassword
+        String confirmedPassword,
+        @NotNull(message = "Roles are required.")
+        List<Integer> roleIds
 ) {
 }

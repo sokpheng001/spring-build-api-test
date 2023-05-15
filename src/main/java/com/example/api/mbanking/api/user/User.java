@@ -1,7 +1,10 @@
 package com.example.api.mbanking.api.user;
 
+import com.example.api.mbanking.api.auth.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor
 @Data
@@ -19,5 +22,7 @@ public class User {
     private String password;
     private Boolean isVerified;
     private String verifiedCode;
+    //User has roles
+    private List<Role> roles;
 
 }

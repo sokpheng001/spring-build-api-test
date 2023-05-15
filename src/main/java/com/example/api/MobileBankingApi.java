@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MobileBankingApi {
     public static void main(String[] args) {
+
         SpringApplication.run(MobileBankingApi.class, args);
     }
     @GetMapping("/test")

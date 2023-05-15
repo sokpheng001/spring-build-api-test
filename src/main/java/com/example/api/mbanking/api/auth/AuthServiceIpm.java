@@ -8,9 +8,11 @@ import com.example.api.mbanking.util.MailUtil;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
@@ -25,19 +27,26 @@ public class AuthServiceIpm implements AuthService{
     private final MailUtil mailUtil;
     @Value("${spring.mail.username}")
     private String appMail;
+    @Transactional
     @Override
     public void register(RegisterDto registerDto) {
         User user = userMapStruct.fromRegisterDtoToUser(registerDto);
         user.setPassword(securityBean.encoder().encode(registerDto.password()));
-        user.setVerifiedCode(UUID.randomUUID().toString());
+        user.setIsVerified(false);
         log.info("User: {}",user);
-        authMapper.register(user);
+        if(authMapper.register(user)){
+            for(Integer role:registerDto.roleIds()){
+                authMapper.createUserRole(user.getId(),role);
+            }
+        }
     }
     @Override
     public void verify(String email) {
         User user = authMapper.selectByEmail(email).orElseThrow(()
                 -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Email is not found."));
-        System.out.println("Verify Code: " + user);
+        user.setVerifiedCode(UUID.randomUUID().toString());
+        String verifiedCode = user.getVerifiedCode();
+        System.out.println("VerifiedCode: " + verifiedCode);
         MailUtil.Meta<?> meta = MailUtil.Meta.builder()
                 .to(email)
                 .from(appMail)
@@ -51,9 +60,9 @@ public class AuthServiceIpm implements AuthService{
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Mail has been failed to send");
         }
     }
-
     @Override
-    public boolean checkVerifiedCode(String verifiedCode) {
-        return authMapper.checkByVerifiedCode(verifiedCode);
+    public boolean checkVerifiedCode(String verifiedCode,String email) {
+        authMapper.updateIsVerified(verifiedCode,email);
+        return authMapper.checkByVerifiedCode(verifiedCode,email);
     }
 }

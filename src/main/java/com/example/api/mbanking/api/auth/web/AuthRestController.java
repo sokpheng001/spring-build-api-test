@@ -17,7 +17,7 @@ public class AuthRestController {
     @GetMapping("/check-verify")
     public BaseRest<?> checkVerifiedCode(@RequestParam(required = false) String email, @RequestParam(required = false) String verifiedCode){
         String message;
-        if(authService.checkVerifiedCode(verifiedCode)){
+        if(authService.checkVerifiedCode(verifiedCode,email)){
             message = "Verified successfully.";
         }else {
             message = "Failed to verify";
@@ -27,7 +27,7 @@ public class AuthRestController {
                 .code(HttpStatus.OK.value())
                 .message(message)
                 .timestamp(LocalDateTime.now())
-                .data(authService.checkVerifiedCode(verifiedCode))
+                .data(email)
                 .build();
     }
     @PostMapping("/register")
