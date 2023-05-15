@@ -24,8 +24,8 @@ public class AuthProvider {
         return new SQL(){{
             SELECT("r.id, r.name");
             FROM("roles AS r");
-            INNER_JOIN("user_roles AS ur ON r.id = ur.role_id");
-            WHERE("r.id = #{id}");
+            INNER_JOIN("users_roles AS ur ON r.id = ur.role_id");
+            WHERE("ur.user_id = #{userId}");
         }}.toString();
     }
     public String buildUpdateUserSql(){

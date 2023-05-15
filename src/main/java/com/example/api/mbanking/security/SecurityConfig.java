@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/users/**")
                 .hasAnyRole("ADMIN");
         httpSecurity.authorizeHttpRequests()
-                        .requestMatchers("a/pi/v1/user-accounts/**")
+                        .requestMatchers("api/v1/user-accounts/**")
                                 .hasRole("USER_ACCOUNT");
         httpSecurity.authorizeHttpRequests()
                         .requestMatchers("/api/v1/accounts/**")

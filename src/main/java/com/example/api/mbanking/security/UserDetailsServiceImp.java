@@ -19,6 +19,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
         User user = authMapper.loadUserByUserName(username).orElseThrow(()
         -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User is not found"));
         CustomerUserDetails customerUserDetails = new CustomerUserDetails();
+        System.out.println(user);
         customerUserDetails.setUser(user);
         return customerUserDetails;
     }

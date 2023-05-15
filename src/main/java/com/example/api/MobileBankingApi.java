@@ -1,5 +1,6 @@
 package com.example.api;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
@@ -16,4 +17,5 @@ public class MobileBankingApi {
     public String test(){
         return "auth/verify";
     }
+
 }

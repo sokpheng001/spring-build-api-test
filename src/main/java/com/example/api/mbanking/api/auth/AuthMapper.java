@@ -12,17 +12,19 @@ import java.util.Optional;
 public interface AuthMapper {
     @InsertProvider(type = AuthProvider.class, method = "buildRegisterSql")
     @Options(useGeneratedKeys = true, keyProperty = "id",keyColumn = "id")
-    @Results(id = "resultMapper",value = {
-            @Result(column = "verified_code",property = "verifiedCode"),
-            @Result(column = "id", property = "roles",many = @Many(select = "loadUserRoles"))
-    })
     boolean register(@Param("u")User user);
     @InsertProvider(type = AuthProvider.class, method = "buildInsertUserRoleSql")
     void createUserRole(@Param("userId") Integer userId, @Param("roleId") Integer roleId);
-    @Select("SELECT *from public.users WHERE email = #{email} AND is_verified = TRUE")
-    Optional<User> loadUserByUserName(String email);
+    @Select("SELECT * from mobilebankingapi.public.users WHERE email = #{email} AND is_verified = TRUE")
+    @Results(id = "resultMapper",value = {
+            @Result(column = "id", property = "id"),
+            @Result(column = "verified_code",property = "verifiedCode"),
+            @Result(column = "is_verified",property = "isVerified"),
+            @Result(column = "id", property = "roles",many = @Many(select = "loadUserRoles"))
+    })
+    Optional<User> loadUserByUserName(@Param("email") String email);
     @SelectProvider(value = AuthProvider.class, method = "buildLoadUserRolesSql")
-    List<Role> loadUserRoles(@Param("id") Integer id);
+    List<Role> loadUserRoles(Integer userId);
     @Select("SELECT *FROM mobilebankingapi.public.users WHERE  mobilebankingapi.public.users.email = #{email} AND is_deleted = FALSE")
     @Result(column = "verified_code",property = "verifiedCode")
     Optional<User> selectByEmail(@Param("email") String email);
