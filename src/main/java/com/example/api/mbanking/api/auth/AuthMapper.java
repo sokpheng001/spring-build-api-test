@@ -10,8 +10,8 @@ import java.util.Optional;
 @Mapper
 @Repository
 public interface AuthMapper {
-    @InsertProvider(type = AuthProvider.class, method = "buildRegisterSql")
     @Options(useGeneratedKeys = true, keyProperty = "id",keyColumn = "id")
+    @InsertProvider(type = AuthProvider.class, method = "buildRegisterSql")
     boolean register(@Param("u")User user);
     @InsertProvider(type = AuthProvider.class, method = "buildInsertUserRoleSql")
     void createUserRole(@Param("userId") Integer userId, @Param("roleId") Integer roleId);
@@ -32,4 +32,7 @@ public interface AuthMapper {
     boolean checkByVerifiedCode(String verifiedCode, String email);
     @UpdateProvider(type = AuthProvider.class, method = "buildUpdateUserSql")
     void updateIsVerified(@Param("code") String verifiedCode, String email);
+    //checking if email is existed
+    @Select("SELECT EXISTS(SELECT *FROM mobilebankingapi.public.users WHERE email = #{email})")
+    boolean checkEmailIsExisted(String email);
 }

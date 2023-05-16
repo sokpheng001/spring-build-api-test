@@ -4,6 +4,7 @@ import com.example.api.mbanking.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -53,11 +54,14 @@ public class SecurityConfig {
         httpSecurity.csrf().disable().httpBasic();
         httpSecurity
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/users/**")
+                .requestMatchers(HttpMethod.GET,"/api/v1/users/**")
                 .hasAnyRole("ADMIN");
+        httpSecurity
+                .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.POST,"/api/v1/users/**")
+                .hasAnyRole("SYSTEM");
         httpSecurity.authorizeHttpRequests()
-                        .requestMatchers("api/v1/user-accounts/**")
-                                .hasRole("USER_ACCOUNT");
+                        .requestMatchers("api/v1/user-accounts/**").authenticated();
         httpSecurity.authorizeHttpRequests()
                         .requestMatchers("/api/v1/accounts/**")
                                 .hasRole("ACCOUNT");
@@ -69,8 +73,9 @@ public class SecurityConfig {
                                 .hasRole("NOTIFICATION");
         httpSecurity.authorizeHttpRequests()
                         .requestMatchers("/api/v1/files/**")
-                                .hasRole("FILE")
-                                        .anyRequest().permitAll();
+                                .hasRole("FILE");
+        httpSecurity.authorizeHttpRequests()
+                        .requestMatchers("/api/v1/auth/**").permitAll();
         httpSecurity
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

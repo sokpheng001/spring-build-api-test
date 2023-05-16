@@ -1,8 +1,8 @@
 package com.example.api.mbanking.exception;
 
 import com.example.api.mbanking.base.BaseError;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -121,6 +122,40 @@ public class ApiException {
                 .timestamp(LocalDateTime.now())
                 .message("File is not exited.")
                 .error("File is not found.")
+                .build();
+    }
+
+    /**
+     * Used for checking confirmed password.
+     * @param e
+     * @return BaseError<?>
+     */
+    @ResponseStatus(HttpStatus.IM_USED)
+    @ExceptionHandler(ValidationException.class)
+    public BaseError<?> handlePasswordInsertion(ValidationException e){
+        return BaseError.builder()
+                .status(false)
+                .code(HttpStatus.BAD_REQUEST.value())
+                .timestamp(LocalDateTime.now())
+                .message("Invalid password")
+                .error(e.getMessage())
+                .build();
+    }
+
+    /**
+     * Used for checking email is existed.
+     * @param e
+     * @return BaseError<?>
+     */
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(SQLException.class)
+    public BaseError<?> handleEmailIsExisted(SQLException e){
+        return BaseError.builder()
+                .status(false)
+                .code(HttpStatus.CONFLICT.value())
+                .timestamp(LocalDateTime.now())
+                .message("Email is existed.")
+                .error(e.getMessage())
                 .build();
     }
 }

@@ -6,15 +6,16 @@ import com.example.api.mbanking.api.user.UserMapStruct;
 import com.example.api.mbanking.security.SecurityBean;
 import com.example.api.mbanking.util.MailUtil;
 import jakarta.mail.MessagingException;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.SQLDataException;
 import java.util.UUID;
 
 @Service
@@ -29,13 +30,19 @@ public class AuthServiceIpm implements AuthService{
     private String appMail;
     @Transactional
     @Override
-    public void register(RegisterDto registerDto) {
+    public void register(RegisterDto registerDto) throws SQLDataException {
+        if(!registerDto.password().equals(registerDto.confirmedPassword())){
+            throw new ValidationException("Confirmed password is wrong!");
+        }
         User user = userMapStruct.fromRegisterDtoToUser(registerDto);
         user.setPassword(securityBean.encoder().encode(registerDto.password()));
         user.setIsVerified(false);
         log.info("User: {}",user);
+        if(authMapper.checkEmailIsExisted(registerDto.email())){
+            throw new SQLDataException("Email is existed");
+        }
         if(authMapper.register(user)){
-            for(Integer role:registerDto.roleIds()){
+            for (Integer role: registerDto.roleIds()){
                 authMapper.createUserRole(user.getId(),role);
             }
         }

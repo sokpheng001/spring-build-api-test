@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLDataException;
 import java.time.LocalDateTime;
 
 @RestController
@@ -31,7 +32,7 @@ public class AuthRestController {
                 .build();
     }
     @PostMapping("/register")
-    public BaseRest<?> register(@Valid @RequestBody RegisterDto registerDto){
+    public BaseRest<?> register(@Valid @RequestBody RegisterDto registerDto) throws SQLDataException {
         authService.register(registerDto);
         return BaseRest.builder()
                 .status(true)
