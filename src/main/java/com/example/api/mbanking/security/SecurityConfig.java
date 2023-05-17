@@ -52,6 +52,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable().httpBasic();
+        httpSecurity.authorizeHttpRequests(auth->{
+
+        });
         httpSecurity
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET,"/api/v1/users/**")
@@ -61,7 +64,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST,"/api/v1/users/**")
                 .hasAnyRole("SYSTEM");
         httpSecurity.authorizeHttpRequests()
-                        .requestMatchers("api/v1/user-accounts/**").authenticated();
+                        .requestMatchers("api/v1/user-accounts/**")
+                .hasAnyRole("ADMIN");
         httpSecurity.authorizeHttpRequests()
                         .requestMatchers("/api/v1/accounts/**")
                                 .hasRole("ACCOUNT");
@@ -75,7 +79,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/files/**")
                                 .hasRole("FILE");
         httpSecurity.authorizeHttpRequests()
-                        .requestMatchers("/api/v1/auth/**").permitAll();
+                        .requestMatchers("/api/v1/auth/**").permitAll().anyRequest().authenticated();
         httpSecurity
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

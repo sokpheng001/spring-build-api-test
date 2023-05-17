@@ -1,5 +1,6 @@
 package com.example.api.mbanking.api.auth;
 
+import com.example.api.mbanking.api.user.Role;
 import com.example.api.mbanking.api.user.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;

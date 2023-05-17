@@ -1,4 +1,4 @@
-package com.example.api.mbanking.api.auth;
+package com.example.api.mbanking.api.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

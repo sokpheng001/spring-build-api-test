@@ -38,9 +38,9 @@ public class AuthServiceIpm implements AuthService{
         user.setPassword(securityBean.encoder().encode(registerDto.password()));
         user.setIsVerified(false);
         log.info("User: {}",user);
-        if(authMapper.checkEmailIsExisted(registerDto.email())){
-            throw new SQLDataException("Email is existed");
-        }
+//        if(authMapper.checkEmailIsExisted(registerDto.email())){
+//            throw new SQLDataException("Email is existed");
+//        }
         if(authMapper.register(user)){
             for (Integer role: registerDto.roleIds()){
                 authMapper.createUserRole(user.getId(),role);

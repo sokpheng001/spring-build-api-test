@@ -47,4 +47,7 @@ public interface UserMapper {
     @SelectProvider(type = UserProvider.class, method = "searchUserByStudentCardId")
     @ResultMap("userResultMap")
     List<User> searchUserByStudentCardId(@Param("cardId") StudentCardIDDto studentCardIDDto);
+    //
+    @Select("SELECT EXISTS(SELECT *FROM mobilebankingapi.public.roles WHERE id = #{roleId})")
+    boolean isExistedRoleById(Integer roleId);
 }

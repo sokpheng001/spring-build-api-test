@@ -1,6 +1,5 @@
 package com.example.api.mbanking.api.user;
 
-import com.example.api.mbanking.api.auth.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
