@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AuthRestController {
     private final AuthService authService;
+
     @GetMapping("/check-verify")
     public BaseRest<?> checkVerifiedCode(@RequestParam(required = false) String email, @RequestParam(required = false) String verifiedCode){
         String message;
@@ -51,6 +52,16 @@ public class AuthRestController {
                 .message("Please check email to verify.")
                 .timestamp(LocalDateTime.now())
                 .data(email)
+                .build();
+    }
+    @PostMapping("/login")
+    public BaseRest<?> login(@RequestBody @Valid LoginDto loginDto){
+        return BaseRest.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Login successfully")
+                .timestamp(LocalDateTime.now())
+                .data(authService.login(loginDto))
                 .build();
     }
 }

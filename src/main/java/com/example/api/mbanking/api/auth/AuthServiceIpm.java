@@ -1,5 +1,7 @@
 package com.example.api.mbanking.api.auth;
 
+import com.example.api.mbanking.api.auth.web.AuthDto;
+import com.example.api.mbanking.api.auth.web.LoginDto;
 import com.example.api.mbanking.api.auth.web.RegisterDto;
 import com.example.api.mbanking.api.user.User;
 import com.example.api.mbanking.api.user.UserMapStruct;
@@ -11,11 +13,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.SQLDataException;
+import java.util.Base64;
 import java.util.UUID;
 
 @Service
@@ -26,6 +32,7 @@ public class AuthServiceIpm implements AuthService{
     private final UserMapStruct userMapStruct;
     private final SecurityBean securityBean;
     private final MailUtil mailUtil;
+    private final DaoAuthenticationProvider daoAuthenticationProvider;
     @Value("${spring.mail.username}")
     private String appMail;
     @Transactional
@@ -71,5 +78,14 @@ public class AuthServiceIpm implements AuthService{
     public boolean checkVerifiedCode(String verifiedCode,String email) {
         authMapper.updateIsVerified(verifiedCode,email);
         return authMapper.checkByVerifiedCode(verifiedCode,email);
+    }
+    @Override
+    public AuthDto login(LoginDto loginDto) {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(loginDto.email(),loginDto.password());
+        authentication = daoAuthenticationProvider.authenticate(authentication);
+        System.out.println(authentication.getCredentials());
+        String format = authentication.getName() + ":" + authentication.getCredentials();
+        String endCoding = Base64.getEncoder().encodeToString(format.getBytes());
+        return new AuthDto(String.format("Basic %s",endCoding));
     }
 }
