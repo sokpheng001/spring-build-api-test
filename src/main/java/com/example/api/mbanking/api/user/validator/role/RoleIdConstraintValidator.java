@@ -1,6 +1,7 @@
-package com.example.api.mbanking.api.user.validator;
+package com.example.api.mbanking.api.user.validator.role;
 
 import com.example.api.mbanking.api.user.UserMapper;
+import com.example.api.mbanking.api.user.validator.role.RoleIdConstraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;

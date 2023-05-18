@@ -1,4 +1,4 @@
-package com.example.api.mbanking.api.user.validator;
+package com.example.api.mbanking.api.user.validator.password;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -8,14 +8,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-
-@Constraint(validatedBy = RoleIdConstraintValidator.class)
+@Constraint(validatedBy = PasswordCheckIsStrong.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
-public @interface RoleIdConstraint {
-    String message() default "Role id is not found.";
-
+public @interface PasswordIsStrong {
+    String message() default "Password is weak.";
     Class<?>[] groups() default { };
-
     Class<? extends Payload>[] payload() default { };
 }

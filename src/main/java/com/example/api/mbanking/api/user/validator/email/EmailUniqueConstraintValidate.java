@@ -1,6 +1,7 @@
-package com.example.api.mbanking.api.user.validator;
+package com.example.api.mbanking.api.user.validator.email;
 
 import com.example.api.mbanking.api.auth.AuthMapper;
+import com.example.api.mbanking.api.user.validator.email.EmailUnique;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;

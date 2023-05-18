@@ -19,6 +19,9 @@ repositories {
 }
 
 dependencies {
+    // password validate
+// https://mvnrepository.com/artifact/org.passay/passay
+    implementation group: 'org.passay', name: 'passay', version: '1.6.3'
     //thymeleaf
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
     //mail
