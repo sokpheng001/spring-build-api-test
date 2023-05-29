@@ -19,6 +19,9 @@ repositories {
 }
 
 dependencies {
+    //jwt
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // password validate
 // https://mvnrepository.com/artifact/org.passay/passay
     implementation group: 'org.passay', name: 'passay', version: '1.6.3'

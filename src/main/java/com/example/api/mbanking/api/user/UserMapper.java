@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 @Mapper
+//
 public interface UserMapper {
     @SelectProvider(type = UserProvider.class, method = "buildSelectAllSql")
     @Results(id = "userResultMap", value = {

@@ -3,22 +3,32 @@ package com.example.api.mbanking.api.user.validator.password;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.mapping.Array;
 import org.passay.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 @RequiredArgsConstructor
 public class PasswordCheckIsStrong implements ConstraintValidator<PasswordIsStrong, String> {
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
         PasswordValidator passwordValidator = new PasswordValidator(
-                new AllowedCharacterRule(new char[] { 'a', 'b', 'c' }),
-                new CharacterRule(EnglishCharacterData.LowerCase, 5),
-                new LengthRule(8, 10)
+                Arrays.asList(
+                        new LengthRule(5,10),
+                        new CharacterRule(EnglishCharacterData.LowerCase,1),
+                        new CharacterRule(EnglishCharacterData.UpperCase,1),
+                        new CharacterRule(EnglishCharacterData.Special,1),
+                        new WhitespaceRule()
+                )
         );
         PasswordData passwordData = new PasswordData(password);
-        RuleResult validate = passwordValidator.validate(passwordData);
-        System.out.println(validate.getDetails().get(0));
-        if(validate.isValid()) return true;
-        context.buildConstraintViolationWithTemplate(passwordValidator.getMessages(validate).stream().findFirst().get())
+        RuleResult ruleResult = passwordValidator.validate(passwordData);
+        if(ruleResult.isValid()){
+            return true;
+        }
+        context.buildConstraintViolationWithTemplate(passwordValidator.getMessages(ruleResult).stream().findFirst().get())
                 .addConstraintViolation()
                 .disableDefaultConstraintViolation();
         return false;

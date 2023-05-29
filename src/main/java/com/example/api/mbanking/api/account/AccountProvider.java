@@ -43,7 +43,6 @@ public class AccountProvider {
             UPDATE(tableName);
             SET("account_name = #{u.accountName}");
             SET("profile = #{u.profile}");
-            SET("password = #{u.password}");
             SET("phone_number = #{u.phoneNumber}");
             SET("transfer_limit = #{u.transferLimit}");
             SET("account_type = #{u.accountType}");

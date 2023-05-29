@@ -35,6 +35,15 @@ public class AuthProvider {
             WHERE("email = #{email}");
         }}.toString();
     }
+    //
+    public String buildSelectAuthorities(){
+        return new SQL(){{
+            SELECT("a.id, a.name");
+            FROM("authorities AS a");
+            INNER_JOIN("roles_authorities AS ra ON a.id = ra.authority_id");
+            WHERE("ra.role_id=#{roleId}");
+        }}.toString();
+    }
 }
 
 

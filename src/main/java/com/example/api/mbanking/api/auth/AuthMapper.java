@@ -1,5 +1,6 @@
 package com.example.api.mbanking.api.auth;
 
+import com.example.api.mbanking.api.user.Authorities;
 import com.example.api.mbanking.api.user.Role;
 import com.example.api.mbanking.api.user.User;
 import org.apache.ibatis.annotations.*;
@@ -24,8 +25,7 @@ public interface AuthMapper {
             @Result(column = "id", property = "roles",many = @Many(select = "loadUserRoles"))
     })
     Optional<User> loadUserByUserName(@Param("email") String email);
-    @SelectProvider(value = AuthProvider.class, method = "buildLoadUserRolesSql")
-    List<Role> loadUserRoles(Integer userId);
+//    User loadUserByUserName(@Param("email") String email);
     @Select("SELECT *FROM mobilebankingapi.public.users WHERE  mobilebankingapi.public.users.email = #{email} AND is_deleted = FALSE")
     @Result(column = "verified_code",property = "verifiedCode")
     Optional<User> selectByEmail(@Param("email") String email);
@@ -36,4 +36,14 @@ public interface AuthMapper {
     //checking if email is existed
     @Select("SELECT EXISTS(SELECT *FROM mobilebankingapi.public.users WHERE email = #{email})")
     boolean checkEmailIsExisted(String email);
+    @SelectProvider(type = AuthProvider.class, method = "buildLoadUserRolesSql")
+    @Results(id = "loadUserRolesMapper",value = {
+            @Result(column = "id",property = "id"),
+            @Result(column = "name",property = "name"),
+            @Result(column = "id",property = "authorities", many = @Many(select = "selectAllAuthorities")),
+    })
+    List<Role> loadUserRoles(@Param("userId") Integer userId);
+    @SelectProvider(type = AuthProvider.class, method = "buildSelectAuthorities")
+    List<Authorities> selectAllAuthorities(@Param("roleId") Integer roleId);
+    //;
 }

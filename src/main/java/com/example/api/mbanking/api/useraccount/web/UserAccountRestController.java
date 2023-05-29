@@ -30,6 +30,7 @@ public class UserAccountRestController {
                 .data(userAccountService.selectAll(page, limit))
                 .build();
     }
+
     @PostMapping("/added")
     public BaseRest<?> createUserAccount(@RequestBody CreateUserAccountDto createUserAccountDto){
         System.out.println(createUserAccountDto.createdAt());

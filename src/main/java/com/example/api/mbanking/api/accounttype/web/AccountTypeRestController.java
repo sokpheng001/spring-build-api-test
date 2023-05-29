@@ -4,6 +4,7 @@ package com.example.api.mbanking.api.accounttype.web;
         import com.example.api.mbanking.base.BaseRest;
         import lombok.RequiredArgsConstructor;
         import org.springframework.http.HttpStatus;
+        import org.springframework.security.access.prepost.PreAuthorize;
         import org.springframework.web.bind.annotation.*;
         import java.time.LocalDateTime;
 @RestController
@@ -23,6 +24,7 @@ public class AccountTypeRestController {
                 .build();
     }
     @GetMapping
+    @PreAuthorize("hasAuthority('')")
     public BaseRest<?> findAll(@RequestParam(defaultValue = "1", required = false, name = "page") int page,
                                @RequestParam(defaultValue = "20", required = false, name = "limit") int limit){
         var accountTypDtoList = accountTypeService.findAll(page, limit);

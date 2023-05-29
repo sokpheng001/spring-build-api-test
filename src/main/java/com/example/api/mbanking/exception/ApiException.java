@@ -3,6 +3,7 @@ package com.example.api.mbanking.exception;
 import com.example.api.mbanking.base.BaseError;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -97,13 +99,13 @@ public class ApiException {
      * @return BaseError<?>
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(RuntimeException.class)
-    public BaseError<?> handleNoFileForDownload(RuntimeException e){
+    @ExceptionHandler(IOException.class)
+    public BaseError<?> handleNoFileForDownload(IOException e){
         return BaseError.builder()
                 .status(false)
                 .code(HttpStatus.NOT_FOUND.ordinal())
                 .timestamp(LocalDateTime.now())
-                .message("File is not exited.")
+                .message("File is not found.")
                 .error(e.getMessage())
                 .build();
     }
@@ -121,7 +123,7 @@ public class ApiException {
                 .code(HttpStatus.NOT_FOUND.value())
                 .timestamp(LocalDateTime.now())
                 .message("File is not exited.")
-                .error("File is not found.")
+                .error(nullPointerException.getCause())
                 .build();
     }
 
@@ -155,6 +157,22 @@ public class ApiException {
                 .code(HttpStatus.CONFLICT.value())
                 .timestamp(LocalDateTime.now())
                 .message("Email is existed.")
+                .error(e.getMessage())
+                .build();
+    }
+    /**
+     *
+     * @param e
+     * @return BaseError<?>
+     */
+    @ResponseStatus(HttpStatus.SEE_OTHER)
+    @ExceptionHandler(MyBatisSystemException.class)
+    public BaseError<?> handleMybatis(MyBatisSystemException e){
+        return BaseError.builder()
+                .status(false)
+                .code(HttpStatus.CONFLICT.value())
+                .timestamp(LocalDateTime.now())
+                .message("Error of mybatis")
                 .error(e.getMessage())
                 .build();
     }

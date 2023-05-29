@@ -54,7 +54,7 @@ public class AccountRestController {
                 .data(accountService.searchAccountById(id))
                 .build();
     }
-    @PutMapping("/{id}/id-updated")
+    @PatchMapping ("/{id}/id-updated")
     public BaseRest<?> updateAccountById(@PathVariable Integer id, @RequestBody UpdateAccountDto updateAccountDto){
         return BaseRest
                 .builder()

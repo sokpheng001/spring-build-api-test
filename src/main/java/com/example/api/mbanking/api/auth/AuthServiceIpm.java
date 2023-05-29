@@ -8,21 +8,33 @@ import com.example.api.mbanking.api.user.UserMapStruct;
 import com.example.api.mbanking.security.SecurityBean;
 import com.example.api.mbanking.util.MailUtil;
 import jakarta.mail.MessagingException;
+import jakarta.persistence.PersistenceException;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.SQLDataException;
-import java.util.Base64;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,9 +45,10 @@ public class AuthServiceIpm implements AuthService{
     private final SecurityBean securityBean;
     private final MailUtil mailUtil;
     private final DaoAuthenticationProvider daoAuthenticationProvider;
+    private final JwtEncoder jwtEncoder;
     @Value("${spring.mail.username}")
     private String appMail;
-    @Transactional
+    @Transactional// used for prevent if-can not insert into the table in-data-base
     @Override
     public void register(RegisterDto registerDto) throws SQLDataException {
         if(!registerDto.password().equals(registerDto.confirmedPassword())){
@@ -80,12 +93,30 @@ public class AuthServiceIpm implements AuthService{
         return authMapper.checkByVerifiedCode(verifiedCode,email);
     }
     @Override
-    public AuthDto login(LoginDto loginDto) {
+    public AuthDto login(LoginDto loginDto){
         Authentication authentication = new UsernamePasswordAuthenticationToken(loginDto.email(),loginDto.password());
         authentication = daoAuthenticationProvider.authenticate(authentication);
-        System.out.println(authentication.getCredentials());
-        String format = authentication.getName() + ":" + authentication.getCredentials();
-        String endCoding = Base64.getEncoder().encodeToString(format.getBytes());
-        return new AuthDto(String.format("Basic %s",endCoding));
+        Instant instant = Instant.now();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        String scope = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(data->!data.startsWith("ROLE_"))
+                .collect(Collectors.joining(" "));
+        JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
+                .issuer("self")
+                .issuedAt(instant)
+                .subject(authentication.getName())
+                .expiresAt(Instant.now().plus(1,ChronoUnit.HOURS))
+                .claim("scope",scope)
+                .build();
+        String accessToken = jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet)).getTokenValue();
+        return new AuthDto("Bearer",accessToken);
+        //define scope
+        //        String format = authentication.getName() + ":" + authentication.getCredentials();
+//        String endCoding = Base64.getEncoder().encodeToString(format.getBytes());
+//        System.out.println("Password: " + endCoding);
+//        String scope = authentication.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority).collect(Collectors.joining(" "));
+//        return new AuthDto(String.format("Basic %s",endCoding));
     }
 }

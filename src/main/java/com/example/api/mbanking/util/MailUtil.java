@@ -3,7 +3,6 @@ package com.example.api.mbanking.util;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.*;
-import org.hibernate.query.sql.internal.ParameterRecognizerImpl;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;

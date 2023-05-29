@@ -23,5 +23,4 @@ public class User {
     private String verifiedCode;
     //User has roles
     private List<Role> roles;
-
 }
